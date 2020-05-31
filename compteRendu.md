@@ -87,4 +87,12 @@ Donc il faut envoyer le programme compilé (fichier .hex ou .elf) au simulateur,
   - Partie serveur est codée par C dans `/src/byterun/`, il permet d'interprèter le fichier exécutable `.elf`, par exemple `test.elf`, l'ensemble des instructions et functions sont définites dans le fichier `test.c`. La fonction `main` se trouve dans `/src/byterun/vm/interp.c`, on peut trouver les actions de chaque instruction, c'est un peut similaire avec le projet de MINI-ZAM.
 
   Donc, on va commencer de tavailler à partir d'ici, interprèter les instrctions et affichier le résultat sur l'interface du simulateur en utilisant multiprocessus. Pour l'instant, le plupart de tests sont passée correctement, certaine tests ne fonctionnent pas bien comme `queens`, `recfun`, `recval`, etc. Ensuite je vais trouver une solution pour envoyer le résultat du côté serveur au client. Finalement, réaliser l'interaction entre client et serveur.
+
+## Semaine7 (08/Avril/2020)
+  On a commençé d'améliorer le serveur actuel du simulateur. Pour le serveur actuel, il
+  contient les fichiers importants.
+  - `lib/targets/microbit.ml` définit les components de microcontrolleur et les primitives de OCaml, on peut les appeler dans le programme OCaml à simuler.
+  - `src/byterun/microbit/prims/bindings.c` Le lien entre les primitives de OCaml et les primitives de C, il transfère les donnèes de `values` aux celles de `C`, et les exécute sur serveur.
+  - `src/byterun/microbit/simul/sf-regs.c` les codes qui réalisent les primitives de `C`, ils faisent juste `print`, mais pas de vraie modification. Le serveur actuel utilise cette version des primitives.
+  - `src/byterun/microbit/microbitlib.c` les codes qui réalisent les primitives de `C`, il faisent le vrai modification, par exemple les primitives de `setter` et `reader`, il décode les donnèes et modifie le bit ou bien rend le vrai résultat.
   
