@@ -1,15 +1,26 @@
 \babel@toc {french}{}
-\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
-\contentsline {section}{\numberline {2}Structure de compilation}{3}{section.2}
-\contentsline {section}{\numberline {3}Composition du simulateur}{4}{section.3}
-\contentsline {subsection}{\numberline {3.1}Montage}{4}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Client}{4}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Serveur}{4}{subsection.3.3}
-\contentsline {section}{\numberline {4}Architecture du simulateur}{5}{section.4}
-\contentsline {subsection}{\numberline {4.1}Mécanisem de communication}{6}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Protocode}{6}{subsection.4.2}
-\contentsline {section}{\numberline {5}Fonctionalités Implémentées}{7}{section.5}
-\contentsline {subsection}{\numberline {5.1}Afficher les phrases à l'écran du simulateur}{7}{subsection.5.1}
-\contentsline {section}{\numberline {6}Sénarios et Tests}{8}{section.6}
-\contentsline {section}{\numberline {7}Difficulités Rencontrées}{8}{section.7}
-\contentsline {section}{\numberline {8}Conclusion}{8}{section.8}
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}% 
+\contentsline {section}{\numberline {2}Structure de compilation}{3}{section.2}% 
+\contentsline {section}{\numberline {3}Composition du simulateur}{4}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Montage}{4}{subsection.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Client}{4}{subsection.3.2}% 
+\contentsline {subsection}{\numberline {3.3}Serveur}{5}{subsection.3.3}% 
+\contentsline {section}{\numberline {4}Architecture du simulateur}{6}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}Mécanisem de communication}{7}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.2}Protocode}{7}{subsection.4.2}% 
+\contentsline {section}{\numberline {5}Fonctionalités Implémentées}{8}{section.5}% 
+\contentsline {subsection}{\numberline {5.1}Afficher les phrases à l'écran du simulateur}{8}{subsection.5.1}% 
+\contentsline {section}{\numberline {6}Méthodologie de réalisation}{9}{section.6}% 
+\contentsline {subsection}{\numberline {6.1}Réalisation en langage de haut niveau}{9}{subsection.6.1}% 
+\contentsline {subsection}{\numberline {6.2}Réalisation en langage de bas niveau}{9}{subsection.6.2}% 
+\contentsline {section}{\numberline {7}Sénarios et Tests}{10}{section.7}% 
+\contentsline {section}{\numberline {8}Difficulités Rencontrées}{10}{section.8}% 
+\contentsline {subsection}{\numberline {8.1}Problème de choix des processus ou des threads}{10}{subsection.8.1}% 
+\contentsline {subsubsection}{\numberline {8.1.1}Processus}{10}{subsubsection.8.1.1}% 
+\contentsline {subsubsection}{\numberline {8.1.2}Threads}{10}{subsubsection.8.1.2}% 
+\contentsline {subsection}{\numberline {8.2}Problème de synchronization}{10}{subsection.8.2}% 
+\contentsline {subsubsection}{\numberline {8.2.1}Pipe}{10}{subsubsection.8.2.1}% 
+\contentsline {subsubsection}{\numberline {8.2.2}Signal}{10}{subsubsection.8.2.2}% 
+\contentsline {subsubsection}{\numberline {8.2.3}Mémoire Partagée}{10}{subsubsection.8.2.3}% 
+\contentsline {subsection}{\numberline {8.3}Problème de conflit entre des Pins}{11}{subsection.8.3}% 
+\contentsline {section}{\numberline {9}Conclusion}{11}{section.9}% 

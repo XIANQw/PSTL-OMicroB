@@ -108,30 +108,32 @@ Cet image montre chaque étape de compilation d'un programme OCaml par OMicroB.
 Le simulatuer est composé du coté de client et du coté de serveur, ainsi que un langage de description pour le montage des périphériques sur un microcontrôleur.
 
 \subsection{Montage}
-Pour démarrer le processus client et implémenter l'interface graphique, le client a besoin de savoir quels composants du microcontrôleur il doit visualiser sur l'interface graphique. Donc 
-nous devons proposer un fichier \textbf{circuit.txt} qui décrit les composants du microcontrôleur et les associations entre chaque composant et les pins correspondants. Avant de démarrer le processus client, le processus analyse est exécuté pour évaluer ce fichier. Une structure qui contient ces informations est stockée dans un mémoire partagé après l'évaluation. Le client peut recevoir les informations des composants du microcontrôleur depuis ce mémoire partagé.\\
+Pour démarrer le processus client et implémenter l'interface graphique, le client a besoin de savoir quels composants du microcontrôleur il doit visualiser sur l'interface graphique. Donc
+nous devons proposer un fichier \textbf{circuit.txt} qui décrit les composants du microcontrôleur et les associations entre chaque composant et les Pins correspondants. Avant de démarrer le processus client, le processus analyse est exécuté pour évaluer ce fichier. Une structure qui contient ces informations est stockée dans un mémoire partagé après l'évaluation. Le client peut recevoir les informations des composants du microcontrôleur depuis ce mémoire partagé.\\
 Cette fonctionnalité est réalisée dans le dossier \textbf{src/byterun/montage}, la structure est définie dans \textbf{src/byterun/simul/share.h}.
 
+\includegraphics[width=\textwidth]{exempleCircuit.png}\\[1cm]
 
+cf.exmple  \textbf{circuit.txt}
 \subsection{Client}
-La partie client est programmée par C dans \textbf{src/byterun/client}, se compose de deux fichiers. 
+La partie client est programmée par C dans \textbf{src/byterun/client}, se compose de deux fichiers.
 \begin{enumerate}
 \item \textbf{client.c} définit les fonctions du travail par exemple traiter le message qui vient du côté server.
 
 \item \textbf{gui.c} implémente l'interface graphique par \textbf{gtk3.0}.
-il nous montre un UI de simulateur permet de visualiser le résultat de programme et les états des pins pendant la simulation, ainsi que l'interaction par les boutons.\\
+il nous montre un UI de simulateur permet de visualiser le résultat de programme et les états des Pins pendant la simulation, ainsi que l'interaction par les boutons.\\
 \end{enumerate}
- 
+
 \subsection{Serveur}
 La partie serveur est codée par C dans "/src/byterun/", il contient des fichiers:
 \begin{enumerate}
-\item \textbf{/src/byterun/vm}. 
+\item \textbf{/src/byterun/vm}.
 Ce dossier contient les fichiers de l'interprèteur d'OMicroB, par exemple le format des type basiques de données, le gc de machine virtuelle ainsi que les définition des instructions de code binaire. Il exécute le programme OCaml et envoie les instructions des codes binaires au serveur.
 
-\item \textbf{/src/byterun/simul/sf-regs.c/.h}. 
+\item \textbf{/src/byterun/simul/sf-regs.c/.h}.
 C'est la bibliothèque des primitives de simulateur, lorsque le programme utilise un primitive par exemple \textbf{set\_pin}, l'interprèteur va appeler le primitive correspondant dans la bibliothèque, le serveur envoie l'instruction au côté client après le calcul.
 
-\item \textbf{src/byterun/shared.c/.h}. 
+\item \textbf{src/byterun/shared.c/.h}.
 Ce fichier définit des structures de données partagées
 entre le processus client et serveur, elles sont stockées dans un mémoire partagé au fur et mesure de l'exécution de programme.
 \end{enumerate}
@@ -156,7 +158,7 @@ Cet image décrit globalement la structure du simulateur. On l'a réalisé par \
 \begin{enumerate}
 	\item \textbf{Main} est le premier thread principal, il traite les arguments venant de processus serveur et connecte aux mémoires partagés, par exemple le mémoire partagé pour la communication et pour le montage. Il est responsable d'exécuter les autres threads.
 	\item \textbf{GUI} crée les composants de l'interface graphique en fonction de l'information du montage. Il actualise l'interface dans un boucle infini afin de visualiser le changement des états de chaque composant simultanément.
-	\item \textbf{Sender} sert à traiter input de l'utilisateur et envoyer l'instruction au serveur, par exemple appuyer les boutons. 
+	\item \textbf{Sender} sert à traiter input de l'utilisateur et envoyer l'instruction au serveur, par exemple appuyer les boutons.
 	\item \textbf{Lisener} reçoit l'instruction venant de serveur, en plus manipuler les composants de l'interface graphique en fonction de l'instruction.
 \end{enumerate}
 
@@ -296,12 +298,55 @@ Ascii code =65
   * *
 
   * *
+\section{Méthodologie de réalisation}
+\subsection{Réalisation en langage de haut niveau}
+Selon ce qui précède, notre objectif est de simuler les informations d'entrée et de sortie du micro-controlleur monopuce, nous utilisons donc le \textbf{client} et le \textbf{serveur} pour synchroniser les informations.
 
+Le \textbf{client} et le \textbf{serveur} ont deux processus qui sont leurs \textbf{lisener} et \textbf{sender}. Dans cette méthode d'implémentation, nous traiterons les informations côté \textbf{serveur}. Par exemple, le fichier ocaml \textbf{ocaml\_print\_string} est interpreté à \textbf{microbit\_print\_string} dans le fichier c du \textbf{serveur}, puis le \textbf{serveur} initialisera le simulateur. Selon cette \textbf{microbit\_print\_string}, appelez \textbf{print\_char} et \textbf{microbit\_write\_pixel} pour traiter informations en \textbf{serveur}.
+
+Après traitement des informations, le serveur convertit ces informations en \textbf{protocole} et les envoie au \textbf{client}.
+
+Après avoir reçu le \textbf{protocole}, le  \textbf{client} l'analyse, puis met à jour l'état du \textbf{tableau de Pins} sur le \textbf{client} et affiche les informations reçues à l'écran.
+
+\subsection{Réalisation en langage de bas niveau}
+Afin de mieux simuler l'état de fonctionnement réel du micro-contrôleur à partir de l'architecture du micro-contrôleur, nous espérons modifier directement l'état du \textbf{tableau de Pins}, sans avoir besoin d'autres appels de fonctions,et refléter directement les effets de ces modifications dans \textbf{l'interface graphique} . Cela fera quelques changements basés sur le haut niveau précédent.
+
+Par exemple, nous essayons d'associer un \textbf{pixel} à deux \textbf{Pins}, utilisé pour simuler la relation entre \textbf{LED} et \textbf{pin\_in},\textbf{pin\_out} dans le circuit réel. Lorsque nous voulons une nouvelle image à l'écran, utilisez une fonction appelée \textbf{show} pour parcourir le \textbf{tableau de Pins}, selon l'état du \textbf{tableau de Pins}, chaque \textbf{LED} qui doit être affichée s'affiche .
+
+% Par exemple, nous essayons d'associer un \textbf{pixel} à deux \textbf{Pins}, utilisé pour simuler la relation entre \textbf{LED} et \textbf{pin\_in},\textbf{pin\_out} dans le circuit réel. Lorsque nous voulons une nouvelle image à l'écran, utilisez une fonction appelée \textbf{show} pour parcourir le \textbf{tableau de Pins} tout le temps, selon l'état du \textbf{tableau de Pins}, chaque \textbf{LED} qui doit être affichée s'affiche cycliquement.
 \section{Sénarios et Tests}
 
 \section{Difficulités Rencontrées}
+\subsection{Problème de choix des processus ou des threads}
+\subsubsection{Processus}
 
-Dans le processus de développement du programme, nous avons essayé diverses méthodes pour réaliser le transfert d'informations entre le client et le serveur. Au début, nous utilisions le pipe mais il était limité par la conception du programme. Le pipe n'avait aucun moyen de synchroniser le processus en fonctionnement. Plus tard, nous avons utilisé la méthode du signal pour transmettre des informations. Mais nous avons également constaté que parce qu'une action nécessite un signal défini par l'utilisateur pour être implémentée. Cependant, sur le système mac OS, il n'y a que deux signaux personnalisés que les utilisateurs peuvent utiliser. Nous avons donc également abandonné ce plan. Après de nombreuses tentatives, nous avons utilisé la méthode de la mémoire partagée et utilisé la variable mutex et de condiction pour synchroniser les processus.
+\subsubsection{Threads}
+
+\subsection{Problème de synchronization}
+Dans le processus de développement du programme, nous avons essayé diverses méthodes pour réaliser le transfert d'informations entre le client et le serveur.
+\subsubsection{Pipe}
+Au début, nous utilisions le pipe mais il était limité par la conception du programme. Le pipe n'avait aucun moyen de synchroniser le processus en fonctionnement.
+\subsubsection{Signal}
+Plus tard, nous avons utilisé la méthode du signal pour transmettre des informations. Mais nous avons également constaté que parce qu'une action nécessite un signal défini par l'utilisateur pour être implémentée. Cependant, sur le système mac OS, il n'y a que deux signaux personnalisés que les utilisateurs peuvent utiliser. Nous avons donc également abandonné ce plan.
+\subsubsection{Mémoire Partagée}
+Après de nombreuses tentatives, nous avons utilisé la méthode de la mémoire partagée et utilisé la variable mutex et de condiction pour synchroniser les processus.
+\subsection{Problème de conflit entre des Pins}
+
+\includegraphics[width=\textwidth]{pbConflitPins.png}\\[1cm]
+
+Dans le circuit actuel, une \textbf{LED} est contrôlée par un \textbf{Pin\_in} et un \textbf{Pin\_out}.
+Lorsque nous voulons afficher une lettre à l'écran, par exemple, il doit afficher \textbf{LED1.1} et \textbf{LED3.4} dans la figure en même temps.
+
+Ensuite, \textbf{Pin\_row1} et \textbf{Pin\_col1} qui correspond à \textbf{LED1.1} seront modifiés pour:
+
+\textbf{Pin\_row1} -> HIGH, \textbf{pin\_col1} -> LOW
+
+\textbf{Pin\_row3} et \textbf{Pin\_col4} correspond à \textbf{LED3.4} seront modifiés pour:
+
+\textbf{Pin\_row3} -> HIGH, \textbf{pin\_col4} -> LOW
+
+Mais si nous changeons la \textbf{LED} en fonction de \textbf{l'état de Pins}, \textbf{LED3.1} et \textbf{LED1.4} seront également allumées en même temps. Parce que (\textbf{Pin\_row3} -> HIGH, \textbf{pin\_col1} -> LOW) correspondent à \textbf{LED3.1}, (\textbf{Pin\_row1} -> HIGH, \textbf{pin\_col4} -> LOW) correspondent à \textbf{LED1.4}
+
 
 \section{Conclusion}
 
