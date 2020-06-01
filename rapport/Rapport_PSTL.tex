@@ -112,9 +112,6 @@ Pour démarrer le processus client et implémenter l'interface graphique, le cli
 nous devons proposer un fichier \textbf{circuit.txt} qui décrit les composants du microcontrôleur et les associations entre chaque composant et les Pins correspondants. Avant de démarrer le processus client, le processus analyse est exécuté pour évaluer ce fichier. Une structure qui contient ces informations est stockée dans un mémoire partagé après l'évaluation. Le client peut recevoir les informations des composants du microcontrôleur depuis ce mémoire partagé.\\
 Cette fonctionnalité est réalisée dans le dossier \textbf{src/byterun/montage}, la structure est définie dans \textbf{src/byterun/simul/share.h}.
 
-\includegraphics[width=\textwidth]{exempleCircuit.png}\\[1cm]
-
-cf.exmple  \textbf{circuit.txt}
 \subsection{Client}
 La partie client est programmée par C dans \textbf{src/byterun/client}, se compose de deux fichiers.
 \begin{enumerate}
@@ -141,13 +138,14 @@ entre le processus client et serveur, elles sont stockées dans un mémoire part
 
 \clearpage
 \pagestyle{fancy}
-\lhead{Mécanisme de communication}
+\lhead{Architecture du simulateur}
 \rhead{\thepage}
 \fancyfoot{}
 \section{Architecture du simulateur}
 \includegraphics[width=\textwidth]{simulator.png}\\[1cm]
 Cet image décrit globalement la structure du simulateur. On l'a réalisé par \textbf{l'architecture serveur-client} et il exécute deux processus en concurrence. Chaque processus exécute plusieurs threads et travaille asynchroniquement.\\
 
+\subsection{Tâche du thread}
 \textbf{Processus Serveur} exécute deux threads, \textbf{lisener} et \textbf{Main}.
 \begin{enumerate}
 	\item \textbf{Main} traite simplement l'instruction qui vient de l'interprèteur et envoyer au thread \textbf{lisener} de client.
@@ -165,9 +163,9 @@ Cet image décrit globalement la structure du simulateur. On l'a réalisé par \
 \subsection{Mécanisem de communication}
 La mémoire partagée sert à communiquer entre le serveur et client, puisque c'est la plus rapide manière du transport de données. Mais son inconvénient est que l'on doit implémenter un mécanisme de synchronization afin de protéger les données partagées pour la lecture et l'écriture. Donc pour deux directions du transport (du serveur au client et du client au serveur), on a besoin de deux mémoires partagées, \textbf{shm1} est écrit par le serveur, le client le lit. \textbf{shm2} est inversé.\\
 
-Afin de synchroniser la lecture et l'écriture, on met un mutex et une variable conditionnelle pour chaque mémoire partagée. Il garant que chaque instruction de serveur peut être bien traiter.
+Afin de synchroniser la lecture et l'écriture, on met un mutex et une variable conditionnelle pour chaque mémoire partagée. Il garant que chaque instruction de serveur peut être bien traiter.\\
 
-\textbf{Sénario de l'envoie une instruction}
+\textbf{Sénario du traitement d'une instruction}
 \begin{enumerate}
 	\item \textbf{client lisener} se bloque pour attendre l'instruction de serveur.
 	\item \textbf{serveur main} demande le mutex
@@ -188,130 +186,108 @@ Afin de synchroniser la lecture et l'écriture, on met un mutex et une variable 
 \end{enumerate}
 
 
-\subsection{Protocode}
-Protocode est un rôle de transfer les informations entre coté client et coté serveur.
+\subsection{Protocole}
+Le protocole est un rôle de transférer les informations entre coté client et coté serveur. Il est un entier de 32 bits. la structure est (numéro de méthode 7bits) :: arguments(25 bits).
+Afin de représenter le protocole en un entier de 32 bits. on a utilisé 7 bits pour le nom de fonction, alors on peut étendre jusqu'à 128 primitives maximum. \\
+(S -> C) indique que la direction de l'envoie est du serveur au client.
 
-0::25bits
-~\\
+\begin{enumerate}
+\item[-] SET\_PIXEL: 1(7bits)::x(12 bits)::y(12 bits)::val(1 bits)\\
+(S -> C) Modifier l'état du pixel des coordonnées x et y à val.\\
+Dans la version de haut niveau, ce protocole sert à modifier directement l'état de pixel. Dans la version de bas niveau, ce protocole est remplacé par SET\_PIN.
 
-(S -> C) Afficher un image représenté par 25bits sur l'écran.
-~\\
+\item[-] CLEAN\_SCREEN: 2(32 bits)\\
+(S -> C) Mettre les états de tous les pixels à 0, envoyé par \textbf{microbit\_clean\_screen}.
 
-1::x::y::val
-~\\
+\item[-] SET\_PIN: 3(7 bits)::p(8 bits)::n(17 bits)\\ 
+(S -> C) Modifier le pin p au niveau n. (n = 0 ou 1), envoyé par \textbf{microbit\_digital\_write}.
+\item[-] WRITE\_PIN: 4(7 bits)::p(8 bits)::v(17 bits)\\
+(S -> C) Modifier le pin p à la valeur v (0 <= v <= 1024), envoyé par \textbf{microbit\_analog\_write}.
 
-(S -> C) Modifier l'état du pixel des coordonnées x et y à val.
-~\\
-
-2
-~\\
-
-(S -> C) Mettre les états de tous les pixels à 0
-~\\
-
-3::p::n
-~\\
-
-(S -> C) Modifier le pin p au niveau n. (n = 0 ou 1)
-~\\
-
-4::p::v
-~\\
-
-(S -> C) Modifier le pin p à la valeur v (0 <= v <= 1024).
-~\\
-
-0
-~\\
-
+\item[-] APPUIE\_A: 0(32 bits)\\
 (C -> S) Inverser l'état du bouton A.
-~\\
 
-1
-~\\
-
+\item[-] APPUIE\_B: 1(32 bits)\\
 (C -> S) Inverser l'état du bouton B.
-~\\
-
-Afin de représenter le protocol en un entier de 32 bits. on a utilisé 7bits pour le nom de fonction, alors on peut étendre jusqu'à 128 fonctions.
-~\\
-
-0::25bits
-~\\
-
-On juste lit 25 fois l'état de bit à partir de 8ieme bit. Pour modifier les états de pixel 0 au pixel 25. Mais cette commande n'est pas très extensible. Par exemple s'il y a plus pixel comme 10x10, alors on ne peut pas les représenter. Donc je veux plutôt réaliser cette fonction par setpixel. Cela veut dire que l'on appel le nombre de pixel fois setpixel pour afficher un image.
-~\\
-
-1::x::y::val. Cela veut dire écran[x][y]=val.
- x est représenté par 12bits, y aussi.
-val est l'état de pixel, soit 0 soit 1 donc 1 bit est suffisant.  Donc la structure est 7::12::12::1=32bits
-~\\
-
-3::pin::niveau. Pin est représenté en 8bits,  niveau est 1 bit. La structure est 7::8::1=16bits
-~\\
-
-
-4::pin::valeur. Pin est aussi représenter en 8bits. Valeur est 17bits. Donc sa structure est 7::8::17=32
-~\\
-
-La différence entre 3 et 4 est que
-
-la commande 3 est envoyé par la fonction microbit\_digital\_write qui permet de mettre le niveau de pin soit 0 soit 1.
-la commande 4 est envoyé par microbit\_analog\_write qui peut modifier la valeur de pin. (0<=valeur<=1024)
-
+\end{enumerate}
 
 \section{Fonctionalités Implémentées}
-\subsection{Afficher les phrases à l'écran du simulateur}
-Nous convertissons les informations de caractère dans la table Ascii en code hexadécimal 5x8 bits et les stockons dans un tableau, puis calculons le code ascii de chaque caractère un par un en recherchant. Utilisez-le pour calculer le décalage de ce caractère dans le tableau. Sortir enfin les 5 * 8 bits d'information dont il dispose. Prendre 5 * 5 bits d'entre eux et les imprimer pixel par pixel sur l'écran.
-~\\
+\subsection{Visualiser les phrases sur la matrice des leds}
+Nous convertissons l'information de caractère dans la table ASCII en code hexadécimal 5x8 bits et les stockons dans un tableau, puis calculons le code ASCII de chaque caractère un par un en recherchant. Utilisons-le pour calculer le décalage de cette caractère dans le tableau. Sortir enfin les 5 * 8 bits d'information dont il dispose. Prendre 5 * 5 bits d'entre eux et les imprimer pixel par pixel sur l'écran.\\
 
-'A'
+Une exemple de visualiser la caractère 'A' sur la matrice des leds.
+\begin{enumerate}
+	\item calcule le code ASCII de 'A', c'est 65.
+	\item cherche son code correspondant dans le tableau, c'est \{30,28,38,28,28\}.
+	\item modifier les états de chaque led. On a finalement une matrice comme cela.\\
+	00110000\\
+	00101000\\
+	00111000\\
+	00101000\\
+	00101000\\
+\end{enumerate}
 
-->
+\subsection{Analyser le ficher du montage}
+Pour le montage de microcontrôleur, il a besoin d'un fichier qui stocke les informations de chaque composant de microcontrôleur comme le nombre des pins, les association entre chaque composant et le pin correspondant. Une fois que le simulateur connait ces informations, il peut implémenter l'interface graphique et contrôler les composants par modifier l'état des pins.\\
+Donc on a utilisé Flex, Yacc et langage C afin de réaliser un langage descriptif.
+\begin{enumerate}
+	\item On défini les \textbf{tokens} dans le fichier \textbf{parser.y}.
+	\item Lier les mots prédéfinis avec ces tokens dans \textbf{lexer.lex}
+	\item Créer les noeuds de \textbf{AST}(l'arbre d'analyse syntaxe) dans fichier \textbf{AST.c} et \textbf{AST.h}.
+	\item Réaliser les fonctions de l'évaluation dans le fichier \textbf{get\_env.c}.
+\end{enumerate}
 
-Ascii code =65
+\clearpage
+C'est une exemple de \textbf{circuit.txt}.
+\begin{figure}[htbp]
+	\subfigure[cf.exmple \textbf{circuit.txt}]{
+		\begin{minipage}[t]{\linewidth}
+			\centering
+			\includegraphics[width=0.3\textwidth]{exempleCircuit.png}\\[1cm]
+			%\caption{fig1}
+		\end{minipage}%
+	}%
+\end{figure}
 
- ->
+\textbf{Le grammaire et les mots prédéfinis}
+\begin{enumerate}
+	\item \textbf{nb\_pins (num\_row, num\_col)}: \textbf{num\_row} est le nombre de pins de ligne(row), \textbf{num\_col} est celui de colonne.
+	\item \textbf{nb\_leds num}: \textbf{num} est le nombre de leds.
+	\item \textbf{nb\_buttons num}: \textbf{num} est le nombre de buttons.
+	\item \textbf{led id pin id1, pin id2}: Cela représente l'association entre le led et deux pins correspondant. id1 est l'identifiant de pin row, id2 est celui de pin col.
+	\item \textbf{button id étiquette pin id}: Cette une déclaration du bouton dont l'identifiant est id et son étiquette, ainsi que le pin correspondant.
+\end{enumerate}
 
-\{30,28,38,28,28\}
+\clearpage
+\pagestyle{fancy}
+\lhead{Méthodologie de réalisation}
+\rhead{\thepage}
+\fancyfoot{}
 
-->
 
-00110000
-
-00101000
-
-00111000
-
-00101000
-
-00101000
-
-->
-
-  **
-
-  * *
-
-  ***
-
-  * *
-
-  * *
 \section{Méthodologie de réalisation}
-\subsection{Réalisation en langage de haut niveau}
-Selon ce qui précède, notre objectif est de simuler les informations d'entrée et de sortie du micro-controlleur monopuce, nous utilisons donc le \textbf{client} et le \textbf{serveur} pour synchroniser les informations.
+Selon ce qui précède, notre objectif est de simuler les informations d'entrée et de sortie du micro-controlleur monopuce, pour réaliser les fonctionnalité du simulateur, il y a deux versions, en \textbf{haut niveau} et en \textbf{bas niveau}.
 
-Le \textbf{client} et le \textbf{serveur} ont deux processus qui sont leurs \textbf{lisener} et \textbf{sender}. Dans cette méthode d'implémentation, nous traiterons les informations côté \textbf{serveur}. Par exemple, le fichier ocaml \textbf{ocaml\_print\_string} est interpreté à \textbf{microbit\_print\_string} dans le fichier c du \textbf{serveur}, puis le \textbf{serveur} initialisera le simulateur. Selon cette \textbf{microbit\_print\_string}, appelez \textbf{print\_char} et \textbf{microbit\_write\_pixel} pour traiter informations en \textbf{serveur}.
+\subsection{Version haut niveau}
+\textbf{haut niveau} est que l'on simule abstraitement un microcontrôleur, on implémente les tableau pour stocker les états de chaque composant. Dès que l'état de composant est modifier par le primitive, on modifie le tableau directement. Par exemple pour primitive \textbf{microbit\_write\_pixel 0 0 true}, on a juste besoin de modifier le tableau qui stock l'état des leds. pixels[0][0] = true.\\
 
-Après traitement des informations, le serveur convertit ces informations en \textbf{protocole} et les envoie au \textbf{client}.
+\textbf{Avantage}\\
+La version est plus simple, il a juste besoin de modifier le tableau correspondant.\\
 
-Après avoir reçu le \textbf{protocole}, le  \textbf{client} l'analyse, puis met à jour l'état du \textbf{tableau de Pins} sur le \textbf{client} et affiche les informations reçues à l'écran.
+\textbf{Inconvénient}\\
+Cette méthode n'est pas généralle, parce que les composants sont différents pour les microcontôleurs divers, on ne peut pas implémenter les tableau pour chaque microcontrôleur.
 
-\subsection{Réalisation en langage de bas niveau}
-Afin de mieux simuler l'état de fonctionnement réel du micro-contrôleur à partir de l'architecture du micro-contrôleur, nous espérons modifier directement l'état du \textbf{tableau de Pins}, sans avoir besoin d'autres appels de fonctions,et refléter directement les effets de ces modifications dans \textbf{l'interface graphique} . Cela fera quelques changements basés sur le haut niveau précédent.
+\subsection{Version bas niveau}
+\textbf{bas niveau} est que l'on simule réellement un microcontrôleur, afin de mieux simuler l'état de fonctionnement réel du microcontrôleur à partir de l'architecture du microcontrôleur, nous espérons modifier directement l'état du \textbf{tableau de pins}, sans avoir besoin d'autres appels de fonctions, et refléter directement les effets de ces modifications sur \textbf{l'interface graphique}. Cela fera quelques changements basés sur le haut niveau précédent.
 
-Par exemple, nous essayons d'associer un \textbf{pixel} à deux \textbf{Pins}, utilisé pour simuler la relation entre \textbf{LED} et \textbf{pin\_in},\textbf{pin\_out} dans le circuit réel. Lorsque nous voulons une nouvelle image à l'écran, utilisez une fonction appelée \textbf{show} pour parcourir le \textbf{tableau de Pins}, selon l'état du \textbf{tableau de Pins}, chaque \textbf{LED} qui doit être affichée s'affiche .
+Par exemple, Un \textbf{LED} est contrôlé par deux \textbf{pins}(\textbf{pin\_row} et \textbf{pin\_col}) dans le circuit du microcontrôleur réel. Lorsque nous voulons allumer un led, nous devons d'abord chercher son \textbf{pin\_row} et \textbf{pin\_col} correspondant, puis mettons \textbf{pin\_row} à haut niveau et \textbf{pin\_col} à bas niveau.\\
+
+\textbf{Avantage}
+Cette version est générale pour tous les microcontrôleur, parce que on manipule directement les états de \textbf{pins} au lieu de composant. Même si le microcontrôleur est changé, on a juste besoin de changer un fichier du montage, mais pas le simulateur.\\
+
+\textbf{Inconvénient}
+Le traitement d'une instruction est plus compliqué, l'interaction entre le serveur et le client est aussi plus fréquente. Par exemple, pour allumer un \textbf{LED}, le serveur envoie une seule instruction \textbf{SET\_PIXEL(X,Y,True)} au client dans la version haut niveau. Mais dans le bas niveau, le serveur doit d'abord chercher le \textbf{pin\_row} et \textbf{pin\_col}, puis envoyer deux instructions \textbf{SET\_PIN(pin\_row, 1)} et \textbf{SET\_PIN(pin\_col, 0)}  au client.
+
 
 % Par exemple, nous essayons d'associer un \textbf{pixel} à deux \textbf{Pins}, utilisé pour simuler la relation entre \textbf{LED} et \textbf{pin\_in},\textbf{pin\_out} dans le circuit réel. Lorsque nous voulons une nouvelle image à l'écran, utilisez une fonction appelée \textbf{show} pour parcourir le \textbf{tableau de Pins} tout le temps, selon l'état du \textbf{tableau de Pins}, chaque \textbf{LED} qui doit être affichée s'affiche cycliquement.
 \section{Sénarios et Tests}
