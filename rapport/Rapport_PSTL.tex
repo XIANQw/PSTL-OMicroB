@@ -251,12 +251,11 @@ Donc on a utilisé Flex, Yacc et langage C afin de réaliser un langage descript
 	\item Réaliser les fonctions de l'évaluation dans le fichier \textbf{get\_env.c}.
 \end{enumerate}
 
-C'est une exemple de \textbf{circuit.txt}.
 \begin{figure}[htbp]
 	\subfigure[cf.exmple \textbf{circuit.txt}]{
 		\begin{minipage}[t]{\linewidth}
 			\centering
-			\includegraphics[width=0.3\textwidth]{exempleCircuit.png}\\[1cm]
+			\includegraphics[width=0.5\textwidth]{circuit_ex.png}\\[1cm]
 			%\caption{fig1}
 		\end{minipage}%
 	}%
@@ -264,11 +263,13 @@ C'est une exemple de \textbf{circuit.txt}.
 
 \textbf{Le grammaire et les mots prédéfinis}
 \begin{enumerate}
+	\item \textbf{nom du simulateur\{l'information du montage\}}: C'est la structure du langage.
 	\item \textbf{nb\_pins (num\_row, num\_col)}: \textbf{num\_row} est le nombre de pins de ligne(row), \textbf{num\_col} est celui de colonne.
 	\item \textbf{nb\_leds num}: \textbf{num} est le nombre de leds.
 	\item \textbf{nb\_buttons num}: \textbf{num} est le nombre de buttons.
-	\item \textbf{led id pin id1, pin id2}: Cela représente l'association entre le led et deux pins correspondant. id1 est l'identifiant de pin row, id2 est celui de pin col.
-	\item \textbf{button id étiquette pin id}: Cette une déclaration du bouton dont l'identifiant est id et son étiquette, ainsi que le pin correspondant.
+	\item \textbf{screen(row, col)}: Cela indique le nombre de ligne et colonne de matrice des LEDs.
+	\item \textbf{led id: (row, col), pin id1, pin id2}: Cela représente le numéro du LED et ses coordonnées dans la matrice, ainsi que l'association entre le led et deux pins correspondant. id1 est l'identifiant de pin row, id2 est celui de pin col.
+	\item \textbf{button id: étiquette pin id}: Cette une déclaration du bouton dont l'identifiant est id et son étiquette, ainsi que le pin correspondant.
 \end{enumerate}
 
 \clearpage
@@ -306,20 +307,45 @@ Le traitement d'une instruction est plus compliqué, l'interaction entre le serv
 \clearpage
 
 \section{Sénarios et Tests}
+Ce sont les étapes de simuler un programme ocaml par la simulateur du microbit.
 \begin{enumerate}
-
-	\item En utilisant lexer,paser,analyse le fichier circuit.txt et implémentation des montage sur interface graphique.\\
-	\centering
-	\includegraphics[width=0.6\textwidth]{circuit.png}\\[1cm]
-
-	\item Initialization des mémoire partagé.\\
-	\centering
-	\includegraphics[width=0.6\textwidth]{sharememoire.png}\\[1cm]
-
-	\item Transfert les information de Server à Client\\
-	\centering
-	\includegraphics[width=0.6\textwidth]{serverSend.png}\\[1cm]
-
+	\item Charger l'information du montage par un fichier \textbf{circuit.txt}.
+	\item Le processus montage analyse ce fichier et génère une structure du montage, en plus envoie au serveur et au client par le mémoire partagée \textbf{envid}.
+	\item Le processus client implémente une interface graphique en fonction de structure du montage.
+	\begin{figure}[htbp]
+		\centering
+		\subfigure[la description du circuit]{
+			\begin{minipage}[t]{0.4\linewidth}
+				\centering
+				\includegraphics[width=\textwidth]{circuit.png}
+			\end{minipage}%
+		}%
+		\subfigure[l'interface graphique de microbit]{
+			\begin{minipage}[t]{0.4\linewidth}
+				\centering
+				\includegraphics[width=\textwidth]{gui.png}
+			\end{minipage}%
+		}%
+		\centering
+	\end{figure}
+	\item Le serveur interprète le programme OCaml, puis envoie des protocoles au client.
+	\item Le client visualise les effets du programme.
+	\begin{figure}[htbp]
+		\centering
+		\subfigure[un programme ocaml]{
+			\begin{minipage}[t]{0.3\linewidth}
+				\centering
+				\includegraphics[width=\textwidth]{printAprog.png}
+			\end{minipage}%
+		}%
+		\subfigure[L'effet de la visualisation]{
+			\begin{minipage}[t]{0.3\linewidth}
+				\centering
+				\includegraphics[width=\textwidth]{printAeffets.png}
+			\end{minipage}%
+		}%
+		\centering
+	\end{figure}
 
 \end{enumerate}
 \clearpage
@@ -346,29 +372,39 @@ Après qu'on a constaté la limite du signal, on a essayé d'utiliser deux pipes
 \clearpage
 
 \subsection{Problème de conflit}
-
-\includegraphics[width=\textwidth]{pbConflitPins.png}
-Cet image montre le circuit du \textbf{microbit}, la matrice de LED se compose d'une matrice de pins de 3 * 9. Pour allumer un LED, on doit mettre le \textbf{pin\_row} correspondant au niveau \textbf{HIGH}, et mettre son \textbf{pin\_col} au niveau \textbf{LOW}.
-
-\centering
-\includegraphics[width=0.6\textwidth]{matrice_Pins.png}
-
-Cet image montre la relation de position entre le circuit du  \textbf{microbit} et l'éran du \textbf{microbit}.\\
-
-Lorsque nous voulons allumer un seulement LED, il n'y a pas de problème. Par exemple, pour \textbf{LED 0 0}, on met \textbf{pin\_row1} au niveau \textbf{HIGH}, et \textbf{pin\_col1} au niveau \textbf{LOW}. Les effets de la simulation est comme cet image.
 \begin{figure}[htbp]
-	\subfigure[cf.exmple \textbf{allumer LED 0 0}]{
+	\subfigure[cf.le circuit réel de microbit]{
 		\begin{minipage}[t]{\linewidth}
 			\centering
-			\includegraphics[width=0.6\textwidth]{no-conflict.png}\\[1cm]
+			\includegraphics[width=0.8\textwidth]{circuitReelMicrobit.png}
+		\end{minipage}%
+	}%
+\end{figure}
+Cet image montre le circuit du \textbf{microbit}, la matrice de LED se compose d'une matrice de pins de 3 * 9. Pour allumer un LED, on doit mettre le \textbf{pin\_row} correspondant au niveau \textbf{HIGH}, et mettre son \textbf{pin\_col} au niveau \textbf{LOW}.
+
+\begin{figure}[htbp]
+	\subfigure[cf.le tableau des associations entre le LED et les pins correspondant]{
+		\begin{minipage}[t]{\linewidth}
+			\centering
+			\includegraphics[width=0.3\textwidth]{matrice_Pins.png}
 			%\caption{fig1}
 		\end{minipage}%
 	}%
 \end{figure}
-
+Ce tableau montre la relation de position entre le circuit du  \textbf{microbit} et l'éran du \textbf{microbit}.
 \clearpage
+Lorsque nous voulons allumer un seulement LED, il n'y a pas de conflit. Par exemple, pour \textbf{LED 0 0}, on met \textbf{pin\_row1} au niveau \textbf{HIGH}, et \textbf{pin\_col1} au niveau \textbf{LOW}. Les effets de la simulation est comme cet image.\\
+\begin{figure}[htbp]
+	\subfigure[cf.exmple \textbf{allumer LED 0 0}]{
+		\begin{minipage}[t]{\linewidth}
+			\centering
+			\includegraphics[width=0.5\textwidth]{no-conflict.png}\\[1cm]
+			%\caption{fig1}
+		\end{minipage}%
+	}%
+\end{figure}\\
 
-Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il y aura un conflit. Par exemple on allume \textbf{LED 0 0} et \textbf{LED 0 1}. On doit mettre \textbf{pin\_row1} et \textbf{pin\_row3} au niveau \textbf{HIGH}, mettre \textbf{pin\_col1} et \textbf{pin\_col4} au niveau \textbf{LOW}. Dans ce cas-là, il y aura quatre LEDs allumé.
+Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il y aura le conflit. Par exemple on allume \textbf{LED 0 0} et \textbf{LED 0 1}. On doit mettre \textbf{pin\_row1} et \textbf{pin\_row3} au niveau \textbf{HIGH}, mettre \textbf{pin\_col1} et \textbf{pin\_col4} au niveau \textbf{LOW}. Dans ce cas-là, il y aura quatre LEDs allumé.
 \begin{enumerate}
 	\item \textbf{LED 0 0} correspondant à \textbf{pin\_row1, pin\_col1}.
 	\item \textbf{LED 4 3} correspondant à \textbf{pin\_row1, pin\_col4}.
@@ -379,15 +415,12 @@ Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il
 	\subfigure[cf.exmple \textbf{allumer LED 0 0 et LED 0 1}]{
 		\begin{minipage}[t]{\linewidth}
 			\centering
-			\includegraphics[width=0.6\textwidth]{conflit.png}\\[1cm]
+			\includegraphics[width=0.5\textwidth]{conflit.png}\\[1cm]
 			%\caption{fig1}
 		\end{minipage}%
 	}%
 \end{figure}
 
-\clearpage
-
-\section{Conclusion}
 
 
 \end{document}
