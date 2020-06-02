@@ -160,6 +160,8 @@ Cet image décrit globalement la structure du simulateur. On l'a réalisé par \
 	\item \textbf{Lisener} reçoit l'instruction venant de serveur, en plus manipuler les composants de l'interface graphique en fonction de l'instruction.
 \end{enumerate}
 
+\clearpage
+
 \subsection{Mécanisem de communication}
 La mémoire partagée sert à communiquer entre le serveur et client, puisque c'est la plus rapide manière du transport de données. Mais son inconvénient est que l'on doit implémenter un mécanisme de synchronization afin de protéger les données partagées pour la lecture et l'écriture. Donc pour deux directions du transport (du serveur au client et du client au serveur), on a besoin de deux mémoires partagées, \textbf{shm1} est écrit par le serveur, le client le lit. \textbf{shm2} est inversé.\\
 
@@ -185,6 +187,7 @@ Afin de synchroniser la lecture et l'écriture, on met un mutex et une variable 
 	\item retour à l'étape 1.
 \end{enumerate}
 
+\clearpage
 
 \subsection{Protocole}
 Le protocole est un rôle de transférer les informations entre coté client et coté serveur. Il est un entier de 32 bits. la structure est (numéro de méthode 7bits) :: arguments(25 bits).
@@ -199,7 +202,7 @@ Dans la version de haut niveau, ce protocole sert à modifier directement l'éta
 \item[-] \textbf{CLEAN\_SCREEN}: 2(32 bits)\\
 (S -> C) Mettre les états de tous les pixels à 0, envoyé par \textbf{microbit\_clean\_screen}.
 
-\item[-] \textbf{SET\_PIN(p,n)}: 3(7 bits)::p(8 bits)::n(17 bits)\\ 
+\item[-] \textbf{SET\_PIN(p,n)}: 3(7 bits)::p(8 bits)::n(17 bits)\\
 (S -> C) Modifier le pin p au niveau n. (n = 0 ou 1), envoyé par \textbf{microbit\_digital\_write}.
 
 \item[-] \textbf{WRITE\_PIN(p,v)}: 4(7 bits)::p(8 bits)::v(17 bits)\\
@@ -212,21 +215,31 @@ Dans la version de haut niveau, ce protocole sert à modifier directement l'éta
 (C -> S) Inverser l'état du bouton B.
 \end{enumerate}
 
+\clearpage
+
 \section{Fonctionalités Implémentées}
 \subsection{Visualiser les phrases sur la matrice des leds}
-Nous convertissons l'information de caractère dans la table ASCII en code hexadécimal 5x8 bits et les stockons dans un tableau, puis calculons le code ASCII de chaque caractère un par un en recherchant. Utilisons-le pour calculer le décalage de cette caractère dans le tableau. Sortir enfin les 5 * 8 bits d'information dont il dispose. Prendre 5 * 5 bits d'entre eux et les imprimer pixel par pixel sur l'écran.\\
+Tout d'abord,nous convertissons les informations de chaque caractère en forme des graphiques raster dans une table en code hexadécimal 5x8 bits en bien tirer par order du code ASCII.Lorsqu'on recevoir un command d'imprimer une caractère à l'écran,
+on va calculer ASCII code correspond à cette caractère,et puis en fonction de ce ASCII code ,on peut calculer le décalage dans la table de code hexadécimal correspond à cette caractère. Sortir enfin les 5 * 8 bits d'information dont il dispose. Prendre 5 * 5 bits d'entre eux et les imprimer pixel par pixel sur l'écran.\\
 
 Une exemple de visualiser la caractère 'A' sur la matrice des leds.
 \begin{enumerate}
 	\item calcule le code ASCII de 'A', c'est 65.
-	\item cherche son code correspondant dans le tableau, c'est \{30,28,38,28,28\}.
-	\item modifier les états de chaque led. On a finalement une matrice comme cela.\\
+	\item calcule son décalage c'est 65 * 5 = 325.(parce que l'écran est de 5 lignes et chaque ligne est composé de 2 chiffre hexadécimal)
+	\item cherche son table de code hexadécimal correspondant dans le tableau, c'est \{30,28,38,28,28\}.
+	\item nous convertissons code hexadécimal en forme code binaire.\\
 	00110000\\
 	00101000\\
 	00111000\\
 	00101000\\
 	00101000\\
+	\item modifier les Pins de chaque LED en fonction de cette code binaire. On a finalement une image comme cela.\\
+	\centering
+	\includegraphics[width=0.6\textwidth]{printA.png}\\[1cm]
+
 \end{enumerate}
+
+\clearpage
 
 \subsection{Analyser le ficher du montage}
 Pour le montage de microcontrôleur, il a besoin d'un fichier qui stocke les informations de chaque composant de microcontrôleur comme le nombre des pins, les association entre chaque composant et le pin correspondant. Une fois que le simulateur connait ces informations, il peut implémenter l'interface graphique et contrôler les composants par modifier l'état des pins.\\
@@ -238,7 +251,6 @@ Donc on a utilisé Flex, Yacc et langage C afin de réaliser un langage descript
 	\item Réaliser les fonctions de l'évaluation dans le fichier \textbf{get\_env.c}.
 \end{enumerate}
 
-\clearpage
 C'est une exemple de \textbf{circuit.txt}.
 \begin{figure}[htbp]
 	\subfigure[cf.exmple \textbf{circuit.txt}]{
@@ -265,12 +277,13 @@ C'est une exemple de \textbf{circuit.txt}.
 \rhead{\thepage}
 \fancyfoot{}
 
+\clearpage
 
 \section{Méthodologie de réalisation}
 Selon ce qui précède, notre objectif est de simuler les informations d'entrée et de sortie du micro-controlleur monopuce, pour réaliser les fonctionnalité du simulateur, il y a deux versions, en \textbf{haut niveau} et en \textbf{bas niveau}.
 
 \subsection{Version haut niveau}
-\textbf{haut niveau} est que l'on simule abstraitement un microcontrôleur, on implémente les tableau pour stocker les états de chaque composant. Dès que l'état de composant est modifier par le primitive, on modifie le tableau directement.\\ 
+\textbf{haut niveau} est que l'on simule abstraitement un microcontrôleur, on implémente les tableau pour stocker les états de chaque composant. Dès que l'état de composant est modifier par le primitive, on modifie le tableau directement.\\
 Par exemple le serveur appelle le primitive \textbf{microbit\_write\_pixel 0 0 true}, il a juste besoin de modifier le tableau qui stock l'état des LEDs. pixels[0][0] = true.\\
 
 \textbf{Avantage}\\
@@ -290,8 +303,26 @@ Cette version est générale pour tous les microcontrôleurs, parce que on manip
 \textbf{Inconvénient}
 Le traitement d'une instruction est plus compliqué, l'interaction entre le serveur et le client est plus fréquente. Par exemple, pour allumer un \textbf{LED}, le serveur envoie une seule instruction \textbf{SET\_PIXEL(X,Y,True)} au client dans la version haut niveau. Mais dans le bas niveau, le serveur doit d'abord chercher le \textbf{pin\_row} et \textbf{pin\_col}, puis envoyer deux instructions \textbf{SET\_PIN(pin\_row, 1)} et \textbf{SET\_PIN(pin\_col, 0)} au client.
 
+\clearpage
 
 \section{Sénarios et Tests}
+\begin{enumerate}
+
+	\item En utilisant lexer,paser,analyse le fichier circuit.txt et implémentation des montage sur interface graphique.\\
+	\centering
+	\includegraphics[width=0.6\textwidth]{circuit.png}\\[1cm]
+
+	\item Initialization des mémoire partagé.\\
+	\centering
+	\includegraphics[width=0.6\textwidth]{sharememoire.png}\\[1cm]
+
+	\item Transfert les information de Server à Client\\
+	\centering
+	\includegraphics[width=0.6\textwidth]{serverSend.png}\\[1cm]
+
+
+\end{enumerate}
+\clearpage
 
 \section{Problème et Solution}
 \subsection{Choix de processus ou de thread}
@@ -310,13 +341,19 @@ Son avantage est que l'on n'a plus besoin exécuter un thread \textbf{lisener} d
 Mais la mécanisme de signal est très limité, le signal utilisable est divers pour le système différent, par exemple pour linux on a droit d'utiliser les signaux qui sont supérieur à 32, mais pour macOS, il y a seulement quatres signaux qu'on peut utiliser.
 
 \subsubsection{Pipe}
-Après qu'on a constaté la limite du signal, on a essayé d'utiliser deux pipes pour la communication en deux direction. Pipe possède la mécanisme de protection, et il peut  synchroniser automatiquement la communication, mais il génère un fichier temporaire pour la lecture et l'écriture, ainsi que il est moins efficace que la mémoire partagée. Donc on a finalement décidé d'utiliser la mémoire partagée.  
- 
+Après qu'on a constaté la limite du signal, on a essayé d'utiliser deux pipes pour la communication en deux direction. Pipe possède la mécanisme de protection, et il peut  synchroniser automatiquement la communication, mais il génère un fichier temporaire pour la lecture et l'écriture, ainsi que il est moins efficace que la mémoire partagée. Donc on a finalement décidé d'utiliser la mémoire partagée.
+
+\clearpage
 
 \subsection{Problème de conflit}
 
 \includegraphics[width=\textwidth]{pbConflitPins.png}
 Cet image montre le circuit du \textbf{microbit}, la matrice de LED se compose d'une matrice de pins de 3 * 9. Pour allumer un LED, on doit mettre le \textbf{pin\_row} correspondant au niveau \textbf{HIGH}, et mettre son \textbf{pin\_col} au niveau \textbf{LOW}.
+
+\centering
+\includegraphics[width=0.6\textwidth]{matrice_Pins.png}
+
+Cet image montre la relation de position entre le circuit du  \textbf{microbit} et l'éran du \textbf{microbit}.\\
 
 Lorsque nous voulons allumer un seulement LED, il n'y a pas de problème. Par exemple, pour \textbf{LED 0 0}, on met \textbf{pin\_row1} au niveau \textbf{HIGH}, et \textbf{pin\_col1} au niveau \textbf{LOW}. Les effets de la simulation est comme cet image.
 \begin{figure}[htbp]
@@ -328,6 +365,8 @@ Lorsque nous voulons allumer un seulement LED, il n'y a pas de problème. Par ex
 		\end{minipage}%
 	}%
 \end{figure}
+
+\clearpage
 
 Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il y aura un conflit. Par exemple on allume \textbf{LED 0 0} et \textbf{LED 0 1}. On doit mettre \textbf{pin\_row1} et \textbf{pin\_row3} au niveau \textbf{HIGH}, mettre \textbf{pin\_col1} et \textbf{pin\_col4} au niveau \textbf{LOW}. Dans ce cas-là, il y aura quatre LEDs allumé.
 \begin{enumerate}
@@ -346,6 +385,7 @@ Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il
 	}%
 \end{figure}
 
+\clearpage
 
 \section{Conclusion}
 
