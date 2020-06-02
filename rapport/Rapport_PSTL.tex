@@ -355,6 +355,8 @@ Cet image montre le circuit du \textbf{microbit}, la matrice de LED se compose d
 
 Cet image montre la relation de position entre le circuit du  \textbf{microbit} et l'éran du \textbf{microbit}.\\
 
+\clearpage
+
 Lorsque nous voulons allumer un seulement LED, il n'y a pas de problème. Par exemple, pour \textbf{LED 0 0}, on met \textbf{pin\_row1} au niveau \textbf{HIGH}, et \textbf{pin\_col1} au niveau \textbf{LOW}. Les effets de la simulation est comme cet image.
 \begin{figure}[htbp]
 	\subfigure[cf.exmple \textbf{allumer LED 0 0}]{
@@ -366,7 +368,6 @@ Lorsque nous voulons allumer un seulement LED, il n'y a pas de problème. Par ex
 	}%
 \end{figure}
 
-\clearpage
 
 Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il y aura un conflit. Par exemple on allume \textbf{LED 0 0} et \textbf{LED 0 1}. On doit mettre \textbf{pin\_row1} et \textbf{pin\_row3} au niveau \textbf{HIGH}, mettre \textbf{pin\_col1} et \textbf{pin\_col4} au niveau \textbf{LOW}. Dans ce cas-là, il y aura quatre LEDs allumé.
 \begin{enumerate}
