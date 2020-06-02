@@ -15,13 +15,10 @@
 \BOOKMARK [2][-]{subsection.6.1}{Version\040haut\040niveau}{section.6}% 15
 \BOOKMARK [2][-]{subsection.6.2}{Version\040bas\040niveau}{section.6}% 16
 \BOOKMARK [1][-]{section.7}{Sénarios et Tests}{}% 17
-\BOOKMARK [1][-]{section.8}{Difficulités Rencontrées}{}% 18
-\BOOKMARK [2][-]{subsection.8.1}{Problème de choix des processus ou des threads}{section.8}% 19
-\BOOKMARK [3][-]{subsubsection.8.1.1}{Processus}{subsection.8.1}% 20
-\BOOKMARK [3][-]{subsubsection.8.1.2}{Threads}{subsection.8.1}% 21
-\BOOKMARK [2][-]{subsection.8.2}{Problème de synchronization}{section.8}% 22
-\BOOKMARK [3][-]{subsubsection.8.2.1}{Pipe}{subsection.8.2}% 23
-\BOOKMARK [3][-]{subsubsection.8.2.2}{Signal}{subsection.8.2}% 24
-\BOOKMARK [3][-]{subsubsection.8.2.3}{Mémoire Partagée}{subsection.8.2}% 25
-\BOOKMARK [2][-]{subsection.8.3}{Problème de conflit entre des Pins}{section.8}% 26
-\BOOKMARK [1][-]{section.9}{Conclusion}{}% 27
+\BOOKMARK [1][-]{section.8}{Problème et Solution}{}% 18
+\BOOKMARK [2][-]{subsection.8.1}{Choix\040de\040processus\040ou\040de\040thread}{section.8}% 19
+\BOOKMARK [2][-]{subsection.8.2}{Synchronization}{section.8}% 20
+\BOOKMARK [3][-]{subsubsection.8.2.1}{Pipe\040+\040Signal}{subsection.8.2}% 21
+\BOOKMARK [3][-]{subsubsection.8.2.2}{Pipe}{subsection.8.2}% 22
+\BOOKMARK [2][-]{subsection.8.3}{Problème de conflit entre des Pins}{section.8}% 23
+\BOOKMARK [1][-]{section.9}{Conclusion}{}% 24

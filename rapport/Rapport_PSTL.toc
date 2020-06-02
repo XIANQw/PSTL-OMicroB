@@ -16,13 +16,10 @@
 \contentsline {subsection}{\numberline {6.1}Version haut niveau}{9}{subsection.6.1}
 \contentsline {subsection}{\numberline {6.2}Version bas niveau}{9}{subsection.6.2}
 \contentsline {section}{\numberline {7}Sénarios et Tests}{10}{section.7}
-\contentsline {section}{\numberline {8}Difficulités Rencontrées}{10}{section.8}
-\contentsline {subsection}{\numberline {8.1}Problème de choix des processus ou des threads}{10}{subsection.8.1}
-\contentsline {subsubsection}{\numberline {8.1.1}Processus}{10}{subsubsection.8.1.1}
-\contentsline {subsubsection}{\numberline {8.1.2}Threads}{10}{subsubsection.8.1.2}
-\contentsline {subsection}{\numberline {8.2}Problème de synchronization}{10}{subsection.8.2}
-\contentsline {subsubsection}{\numberline {8.2.1}Pipe}{10}{subsubsection.8.2.1}
-\contentsline {subsubsection}{\numberline {8.2.2}Signal}{10}{subsubsection.8.2.2}
-\contentsline {subsubsection}{\numberline {8.2.3}Mémoire Partagée}{10}{subsubsection.8.2.3}
+\contentsline {section}{\numberline {8}Problème et Solution}{10}{section.8}
+\contentsline {subsection}{\numberline {8.1}Choix de processus ou de thread}{10}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Synchronization}{10}{subsection.8.2}
+\contentsline {subsubsection}{\numberline {8.2.1}Pipe + Signal}{10}{subsubsection.8.2.1}
+\contentsline {subsubsection}{\numberline {8.2.2}Pipe}{10}{subsubsection.8.2.2}
 \contentsline {subsection}{\numberline {8.3}Problème de conflit entre des Pins}{11}{subsection.8.3}
-\contentsline {section}{\numberline {9}Conclusion}{11}{section.9}
+\contentsline {section}{\numberline {9}Conclusion}{12}{section.9}

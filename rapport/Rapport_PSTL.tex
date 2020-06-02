@@ -192,22 +192,23 @@ Afin de représenter le protocole en un entier de 32 bits. on a utilisé 7 bits 
 (S -> C) indique que la direction de l'envoie est du serveur au client.
 
 \begin{enumerate}
-\item[-] SET\_PIXEL: 1(7bits)::x(12 bits)::y(12 bits)::val(1 bits)\\
+\item[-] \textbf{SET\_PIXEL(x,y,val)}: 1(7bits)::x(12 bits)::y(12 bits)::val(1 bits)\\
 (S -> C) Modifier l'état du pixel des coordonnées x et y à val.\\
 Dans la version de haut niveau, ce protocole sert à modifier directement l'état de pixel. Dans la version de bas niveau, ce protocole est remplacé par SET\_PIN.
 
-\item[-] CLEAN\_SCREEN: 2(32 bits)\\
+\item[-] \textbf{CLEAN\_SCREEN}: 2(32 bits)\\
 (S -> C) Mettre les états de tous les pixels à 0, envoyé par \textbf{microbit\_clean\_screen}.
 
-\item[-] SET\_PIN: 3(7 bits)::p(8 bits)::n(17 bits)\\ 
+\item[-] \textbf{SET\_PIN(p,n)}: 3(7 bits)::p(8 bits)::n(17 bits)\\ 
 (S -> C) Modifier le pin p au niveau n. (n = 0 ou 1), envoyé par \textbf{microbit\_digital\_write}.
-\item[-] WRITE\_PIN: 4(7 bits)::p(8 bits)::v(17 bits)\\
+
+\item[-] \textbf{WRITE\_PIN(p,v)}: 4(7 bits)::p(8 bits)::v(17 bits)\\
 (S -> C) Modifier le pin p à la valeur v (0 <= v <= 1024), envoyé par \textbf{microbit\_analog\_write}.
 
-\item[-] APPUIE\_A: 0(32 bits)\\
+\item[-] \textbf{APPUIE\_A}: 0(32 bits)\\
 (C -> S) Inverser l'état du bouton A.
 
-\item[-] APPUIE\_B: 1(32 bits)\\
+\item[-] \textbf{APPUIE\_B}: 1(32 bits)\\
 (C -> S) Inverser l'état du bouton B.
 \end{enumerate}
 
@@ -269,7 +270,8 @@ C'est une exemple de \textbf{circuit.txt}.
 Selon ce qui précède, notre objectif est de simuler les informations d'entrée et de sortie du micro-controlleur monopuce, pour réaliser les fonctionnalité du simulateur, il y a deux versions, en \textbf{haut niveau} et en \textbf{bas niveau}.
 
 \subsection{Version haut niveau}
-\textbf{haut niveau} est que l'on simule abstraitement un microcontrôleur, on implémente les tableau pour stocker les états de chaque composant. Dès que l'état de composant est modifier par le primitive, on modifie le tableau directement. Par exemple pour primitive \textbf{microbit\_write\_pixel 0 0 true}, on a juste besoin de modifier le tableau qui stock l'état des leds. pixels[0][0] = true.\\
+\textbf{haut niveau} est que l'on simule abstraitement un microcontrôleur, on implémente les tableau pour stocker les états de chaque composant. Dès que l'état de composant est modifier par le primitive, on modifie le tableau directement.\\ 
+Par exemple le serveur appelle le primitive \textbf{microbit\_write\_pixel 0 0 true}, il a juste besoin de modifier le tableau qui stock l'état des LEDs. pixels[0][0] = true.\\
 
 \textbf{Avantage}\\
 La version est plus simple, il a juste besoin de modifier le tableau correspondant.\\
@@ -283,45 +285,66 @@ Cette méthode n'est pas généralle, parce que les composants sont différents 
 Par exemple, Un \textbf{LED} est contrôlé par deux \textbf{pins}(\textbf{pin\_row} et \textbf{pin\_col}) dans le circuit du microcontrôleur réel. Lorsque nous voulons allumer un led, nous devons d'abord chercher son \textbf{pin\_row} et \textbf{pin\_col} correspondant, puis mettons \textbf{pin\_row} à haut niveau et \textbf{pin\_col} à bas niveau.\\
 
 \textbf{Avantage}
-Cette version est générale pour tous les microcontrôleur, parce que on manipule directement les états de \textbf{pins} au lieu de composant. Même si le microcontrôleur est changé, on a juste besoin de changer un fichier du montage, mais pas le simulateur.\\
+Cette version est générale pour tous les microcontrôleurs, parce que on manipule directement les états de \textbf{pins} au lieu de composant. Même si le microcontrôleur est changé, on a juste besoin de changer un fichier du montage, mais pas le simulateur.\\
 
 \textbf{Inconvénient}
-Le traitement d'une instruction est plus compliqué, l'interaction entre le serveur et le client est aussi plus fréquente. Par exemple, pour allumer un \textbf{LED}, le serveur envoie une seule instruction \textbf{SET\_PIXEL(X,Y,True)} au client dans la version haut niveau. Mais dans le bas niveau, le serveur doit d'abord chercher le \textbf{pin\_row} et \textbf{pin\_col}, puis envoyer deux instructions \textbf{SET\_PIN(pin\_row, 1)} et \textbf{SET\_PIN(pin\_col, 0)}  au client.
+Le traitement d'une instruction est plus compliqué, l'interaction entre le serveur et le client est plus fréquente. Par exemple, pour allumer un \textbf{LED}, le serveur envoie une seule instruction \textbf{SET\_PIXEL(X,Y,True)} au client dans la version haut niveau. Mais dans le bas niveau, le serveur doit d'abord chercher le \textbf{pin\_row} et \textbf{pin\_col}, puis envoyer deux instructions \textbf{SET\_PIN(pin\_row, 1)} et \textbf{SET\_PIN(pin\_col, 0)} au client.
 
 
-% Par exemple, nous essayons d'associer un \textbf{pixel} à deux \textbf{Pins}, utilisé pour simuler la relation entre \textbf{LED} et \textbf{pin\_in},\textbf{pin\_out} dans le circuit réel. Lorsque nous voulons une nouvelle image à l'écran, utilisez une fonction appelée \textbf{show} pour parcourir le \textbf{tableau de Pins} tout le temps, selon l'état du \textbf{tableau de Pins}, chaque \textbf{LED} qui doit être affichée s'affiche cycliquement.
 \section{Sénarios et Tests}
 
-\section{Difficulités Rencontrées}
-\subsection{Problème de choix des processus ou des threads}
-\subsubsection{Processus}
+\section{Problème et Solution}
+\subsection{Choix de processus ou de thread}
+Quand on désigne l'architecture du simulateur, on a deux choix pour le côté du serveur et client. Soit on les sépare en deux threads, soit deux processus. Les avantages du thread est que c'est plus facile de partager les données et réaliser la synchronization. Néanmoins, la partie serveur est compilé par \textbf{ocamlc} dans une étape de la compilation, et nous utilisons \textbf{gtk+3.0} pour réaliser l'interface graphique, le compilateur \textbf{ocamlc} ne peut pas compiler la bibliothèque de \textbf{gtk+3.0}, donc on sépare le serveur et le client en deux processus.
 
-\subsubsection{Threads}
 
-\subsection{Problème de synchronization}
-Dans le processus de développement du programme, nous avons essayé diverses méthodes pour réaliser le transfert d'informations entre le client et le serveur.
+\subsection{Synchronization}
+Comme ce que l'on a présenté, le serveur envoie les protocoles au client, et le client visualise simultanément les états de chaque composant, mais pour quelque protocole par exemple \textbf{CLEARSCREEN}, il prend du temps parce qu'il faut éteindre tous les LEDs. Donc s'il n'y a pas de mécanisme de synchronization afin de garantir que le nouveau protocole arrive après le traitement du protocole précédent, il risque de perdre quelques instructions.
+
+Pour synchroniser le transfert du protocole entre le serveur et le client, nous avons essayé plusieurs méthodes diverses dans le processus du développement.
+
+
+\subsubsection{Pipe + Signal}
+Au début, nous utilisions le pipe et le signal pour transmettre le protocole. Pour la direction du serveur au client, le protocole est transmis par le pipe, et la direction inverse, on a utilisé le signal pour représenter le protocole, parce qu'il n'y a que deux protocoles(\textbf{APPUIE\_A} et \textbf{APPUIE\_B}). Le serveur traite le protocole par la fonction \textbf{handler}.
+Son avantage est que l'on n'a plus besoin exécuter un thread \textbf{lisener} dans le processus \textbf{serveur}. Comme la fonction \textbf{handler} exécute dès que le processus serveur reçoit le sigal depuis le processus client. \\
+Mais la mécanisme de signal est très limité, le signal utilisable est divers pour le système différent, par exemple pour linux on a droit d'utiliser les signaux qui sont supérieur à 32, mais pour macOS, il y a seulement quatres signaux qu'on peut utiliser.
+
 \subsubsection{Pipe}
-Au début, nous utilisions le pipe mais il était limité par la conception du programme. Le pipe n'avait aucun moyen de synchroniser le processus en fonctionnement.
-\subsubsection{Signal}
-Plus tard, nous avons utilisé la méthode du signal pour transmettre des informations. Mais nous avons également constaté que parce qu'une action nécessite un signal défini par l'utilisateur pour être implémentée. Cependant, sur le système mac OS, il n'y a que deux signaux personnalisés que les utilisateurs peuvent utiliser. Nous avons donc également abandonné ce plan.
-\subsubsection{Mémoire Partagée}
-Après de nombreuses tentatives, nous avons utilisé la méthode de la mémoire partagée et utilisé la variable mutex et de condiction pour synchroniser les processus.
-\subsection{Problème de conflit entre des Pins}
+Après qu'on a constaté la limite du signal, on a essayé d'utiliser deux pipes pour la communication en deux direction. Pipe possède la mécanisme de protection, et il peut  synchroniser automatiquement la communication, mais il génère un fichier temporaire pour la lecture et l'écriture, ainsi que il est moins efficace que la mémoire partagée. Donc on a finalement décidé d'utiliser la mémoire partagée.  
+ 
 
-\includegraphics[width=\textwidth]{pbConflitPins.png}\\[1cm]
+\subsection{Problème de conflit}
 
-Dans le circuit actuel, une \textbf{LED} est contrôlée par un \textbf{Pin\_in} et un \textbf{Pin\_out}.
-Lorsque nous voulons afficher une lettre à l'écran, par exemple, il doit afficher \textbf{LED1.1} et \textbf{LED3.4} dans la figure en même temps.
+\includegraphics[width=\textwidth]{pbConflitPins.png}
+Cet image montre le circuit du \textbf{microbit}, la matrice de LED se compose d'une matrice de pins de 3 * 9. Pour allumer un LED, on doit mettre le \textbf{pin\_row} correspondant au niveau \textbf{HIGH}, et mettre son \textbf{pin\_col} au niveau \textbf{LOW}.
 
-Ensuite, \textbf{Pin\_row1} et \textbf{Pin\_col1} qui correspond à \textbf{LED1.1} seront modifiés pour:
+Lorsque nous voulons allumer un seulement LED, il n'y a pas de problème. Par exemple, pour \textbf{LED 0 0}, on met \textbf{pin\_row1} au niveau \textbf{HIGH}, et \textbf{pin\_col1} au niveau \textbf{LOW}. Les effets de la simulation est comme cet image.
+\begin{figure}[htbp]
+	\subfigure[cf.exmple \textbf{allumer LED 0 0}]{
+		\begin{minipage}[t]{\linewidth}
+			\centering
+			\includegraphics[width=0.6\textwidth]{no-conflict.png}\\[1cm]
+			%\caption{fig1}
+		\end{minipage}%
+	}%
+\end{figure}
 
-\textbf{Pin\_row1} -> HIGH, \textbf{pin\_col1} -> LOW
-
-\textbf{Pin\_row3} et \textbf{Pin\_col4} correspond à \textbf{LED3.4} seront modifiés pour:
-
-\textbf{Pin\_row3} -> HIGH, \textbf{pin\_col4} -> LOW
-
-Mais si nous changeons la \textbf{LED} en fonction de \textbf{l'état de Pins}, \textbf{LED3.1} et \textbf{LED1.4} seront également allumées en même temps. Parce que (\textbf{Pin\_row3} -> HIGH, \textbf{pin\_col1} -> LOW) correspondent à \textbf{LED3.1}, (\textbf{Pin\_row1} -> HIGH, \textbf{pin\_col4} -> LOW) correspondent à \textbf{LED1.4}
+Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il y aura un conflit. Par exemple on allume \textbf{LED 0 0} et \textbf{LED 0 1}. On doit mettre \textbf{pin\_row1} et \textbf{pin\_row3} au niveau \textbf{HIGH}, mettre \textbf{pin\_col1} et \textbf{pin\_col4} au niveau \textbf{LOW}. Dans ce cas-là, il y aura quatre LEDs allumé.
+\begin{enumerate}
+	\item \textbf{LED 0 0} correspondant à \textbf{pin\_row1, pin\_col1}.
+	\item \textbf{LED 4 3} correspondant à \textbf{pin\_row1, pin\_col4}.
+	\item \textbf{LED 0 1} correspondant à \textbf{pin\_row3, pin\_col4}.
+	\item \textbf{LED 2 4} correspondant à \textbf{pin\_row3, pin\_col1}.
+\end{enumerate}
+\begin{figure}[htbp]
+	\subfigure[cf.exmple \textbf{allumer LED 0 0 et LED 0 1}]{
+		\begin{minipage}[t]{\linewidth}
+			\centering
+			\includegraphics[width=0.6\textwidth]{conflit.png}\\[1cm]
+			%\caption{fig1}
+		\end{minipage}%
+	}%
+\end{figure}
 
 
 \section{Conclusion}
