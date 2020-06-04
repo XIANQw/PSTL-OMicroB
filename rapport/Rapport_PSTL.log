@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.12.14)  3 JUN 2020 02:22
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.12.14)  4 JUN 2020 15:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1658,101 +1658,122 @@ Underfull \hbox (badness 10000) in paragraph at lines 94--95
 [3
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 120--122
+Underfull \hbox (badness 10000) in paragraph at lines 108--109
 
  []
 
+File: Simulator.png Graphic file (type bmp)
+<Simulator.png>
 
-Overfull \hbox (5.36908pt too wide) in paragraph at lines 130--132
-[]\T1/lmr/bx/n/10 /src/byterun/simul/sf-regs.c/.h\T1/lmr/m/n/10 . C'est la bi-b
-lio-thèque des pri-mi-tives de si-mu-la-teur, lorsque
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 125--126
+[][][] 
  []
 
 [4
 
 ]
-File: simulator.png Graphic file (type bmp)
-<simulator.png>
-
-Underfull \hbox (badness 10000) in paragraph at lines 145--147
+Underfull \hbox (badness 10000) in paragraph at lines 151--153
 
  []
 
-[5
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 166--167
-
+[5]
+Overfull \hbox (31.36986pt too wide) in paragraph at lines 181--183
+\T1/lmr/m/n/10 (S -> C) Mo-di-fier l'état du pixel des co-or-don-nées x et y à 
+val, en-voyé par \T1/lmr/bx/n/10 mi-cro-bit_write_pixel(int
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 168--169
-
- []
-
-[6
-
-]
-Overfull \hbox (10.6406pt too wide) in paragraph at lines 208--210
+Overfull \hbox (10.6406pt too wide) in paragraph at lines 187--189
 \T1/lmr/m/n/10 (S -> C) Mo-di-fier le pin p à la va-leur v (0 <= v <= 1024), en
 -voyé par \T1/lmr/bx/n/10 mi-cro-bit_analog_write\T1/lmr/m/n/10 . 
  []
 
-[7
 
-]
-Underfull \hbox (badness 10000) in paragraph at lines 222--224
+Underfull \hbox (badness 10000) in paragraph at lines 187--189
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 205--206
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 241--242
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 230--236
+Underfull \hbox (badness 10000) in paragraph at lines 243--244
 
  []
 
-File: printA.png Graphic file (type bmp)
-<printA.png>
-[8
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 253--255
 
-]
-File: circuit_ex.png Graphic file (type bmp)
-<circuit_ex.png>
-
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 261--262
-[][][] 
  []
 
 
-Overfull \hbox (3.7816pt too wide) in paragraph at lines 267--268
-[]\T1/lmr/bx/n/10 nb_pins (num_row, num_col) \T1/lmr/m/n/10 : \T1/lmr/bx/n/10 n
-um_row \T1/lmr/m/n/10 est le nombre de pins de ligne(row), \T1/lmr/bx/n/10 num_
-col
+Underfull \hbox (badness 10000) in paragraph at lines 256--258
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 269--271
+
+ []
+
+
+Overfull \hbox (12.05768pt too wide) in paragraph at lines 272--275
+\T1/lmr/m/n/10 Par exemple, pour al-lu-mer un \T1/lmr/bx/n/10 LED\T1/lmr/m/n/10
+ , le ser-veur en-voie une seule ins-truc-tion \T1/lmr/bx/n/10 SET_PIXEL(X,Y,Tr
+ue)
+ []
+
+
+Overfull \hbox (27.7408pt too wide) in paragraph at lines 272--275
+\T1/lmr/bx/n/10 pin_row \T1/lmr/m/n/10 et \T1/lmr/bx/n/10 pin_col\T1/lmr/m/n/10
+ , puis en-voyer deux ins-truc-tions \T1/lmr/bx/n/10 SET_PIN(pin_row, 1) \T1/lm
+r/m/n/10 et \T1/lmr/bx/n/10 SET_PIN(pin_col,
  []
 
 [9
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 287--289
+Underfull \hbox (badness 10000) in paragraph at lines 281--283
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 290--292
+Underfull \hbox (badness 10000) in paragraph at lines 289--295
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 299--300
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 301--303
-
- []
-
+File: printA.png Graphic file (type bmp)
+<printA.png>
 [10
 
+]
+File: circuit_ex.png Graphic file (type bmp)
+<circuit_ex.png>
+
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 320--321
+[][][] 
+ []
+
+
+Overfull \hbox (3.7816pt too wide) in paragraph at lines 326--327
+[]\T1/lmr/bx/n/10 nb_pins (num_row, num_col) \T1/lmr/m/n/10 : \T1/lmr/bx/n/10 n
+um_row \T1/lmr/m/n/10 est le nombre de pins de ligne(row), \T1/lmr/bx/n/10 num_
+col
+ []
+
+[11
 
 ]
 File: circuit.png Graphic file (type bmp)
@@ -1763,64 +1784,65 @@ File: printAprog.png Graphic file (type bmp)
 <printAprog.png>
 File: printAeffets.png Graphic file (type bmp)
 <printAeffets.png>
- [11
+ [12
 
-] [12
+
+] [13
 
 ]
 File: circuitReelMicrobit.png Graphic file (type bmp)
 <circuitReelMicrobit.png>
 
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 381--382
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 408--409
 [][][] 
  []
 
 File: matrice_Pins.png Graphic file (type bmp)
 <matrice_Pins.png>
 
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 392--393
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 419--420
 [][][] 
  []
 
-[13
+[14
 
 ]
 File: no-conflict.png Graphic file (type bmp)
 <no-conflict.png>
 
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 404--405
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 431--432
 [][][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 396--406
+Underfull \hbox (badness 10000) in paragraph at lines 423--433
 
  []
 
 File: conflit.png Graphic file (type bmp)
 <conflit.png>
 
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 421--422
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 448--449
 [][][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 426.
-[14
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 453.
+[15
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 426.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 453.
  (./Rapport_PSTL.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 426.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 426.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 426.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 453.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 453.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 453.
  ) 
 Here is how much of TeX's memory you used:
- 28393 strings out of 493007
- 524078 string characters out of 6136718
- 621990 words of memory out of 5000000
- 32107 multiletter control sequences out of 15000+600000
+ 28394 strings out of 493007
+ 524094 string characters out of 6136718
+ 625135 words of memory out of 5000000
+ 32108 multiletter control sequences out of 15000+600000
  575682 words of font info for 60 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 46i,11n,73p,10446b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 46i,11n,73p,10446b,498s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Rapport_PSTL.pdf (15 pages).
+Output written on Rapport_PSTL.pdf (16 pages).

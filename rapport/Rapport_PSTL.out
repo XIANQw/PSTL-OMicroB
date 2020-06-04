@@ -1,23 +1,25 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Structure\040de\040compilation}{}% 2
-\BOOKMARK [1][-]{section.3}{Composition\040du\040simulateur}{}% 3
-\BOOKMARK [2][-]{subsection.3.1}{Montage}{section.3}% 4
+\BOOKMARK [1][-]{section.2}{OMicroB}{}% 2
+\BOOKMARK [1][-]{section.3}{Simulateur}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Serveur}{section.3}% 4
 \BOOKMARK [2][-]{subsection.3.2}{Client}{section.3}% 5
-\BOOKMARK [2][-]{subsection.3.3}{Serveur}{section.3}% 6
-\BOOKMARK [1][-]{section.4}{Architecture\040du\040simulateur}{}% 7
-\BOOKMARK [2][-]{subsection.4.1}{Tâche du thread}{section.4}% 8
-\BOOKMARK [2][-]{subsection.4.2}{Mécanisem de communication}{section.4}% 9
-\BOOKMARK [2][-]{subsection.4.3}{Protocole}{section.4}% 10
-\BOOKMARK [1][-]{section.5}{Fonctionalités Implémentées}{}% 11
-\BOOKMARK [2][-]{subsection.5.1}{Visualiser\040les\040phrases\040sur\040la\040matrice\040des\040leds}{section.5}% 12
-\BOOKMARK [2][-]{subsection.5.2}{Analyser\040le\040ficher\040du\040montage}{section.5}% 13
-\BOOKMARK [1][-]{section.6}{Méthodologie de réalisation}{}% 14
-\BOOKMARK [2][-]{subsection.6.1}{Version\040haut\040niveau}{section.6}% 15
-\BOOKMARK [2][-]{subsection.6.2}{Version\040bas\040niveau}{section.6}% 16
-\BOOKMARK [1][-]{section.7}{Sénarios et Tests}{}% 17
-\BOOKMARK [1][-]{section.8}{Problème et Solution}{}% 18
-\BOOKMARK [2][-]{subsection.8.1}{Choix\040de\040processus\040ou\040de\040thread}{section.8}% 19
-\BOOKMARK [2][-]{subsection.8.2}{Synchronization}{section.8}% 20
-\BOOKMARK [3][-]{subsubsection.8.2.1}{Pipe\040+\040Signal}{subsection.8.2}% 21
-\BOOKMARK [3][-]{subsubsection.8.2.2}{Pipe}{subsection.8.2}% 22
-\BOOKMARK [2][-]{subsection.8.3}{Problème de conflit}{section.8}% 23
+\BOOKMARK [2][-]{subsection.3.3}{Montage}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Mécanisme de communication}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Protocole\040de\040communication}{section.4}% 8
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Chaine de caractère}{subsection.4.1}% 9
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Entier\040de\04032\040bits}{subsection.4.1}% 10
+\BOOKMARK [2][-]{subsection.4.2}{Synchronization}{section.4}% 11
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Pipe\040+\040Signal}{subsection.4.2}% 12
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Pipe}{subsection.4.2}% 13
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Mémoire partagée}{subsection.4.2}% 14
+\BOOKMARK [1][-]{section.5}{Méthodologie de réalisation}{}% 15
+\BOOKMARK [2][-]{subsection.5.1}{Version\040haut\040niveau}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.2}{Version\040bas\040niveau}{section.5}% 17
+\BOOKMARK [1][-]{section.6}{Fonctionalités Implémentées}{}% 18
+\BOOKMARK [2][-]{subsection.6.1}{Visualiser\040du\040texte\040sur\040la\040matrice\040des\040leds}{section.6}% 19
+\BOOKMARK [2][-]{subsection.6.2}{Analyser\040le\040ficher\040du\040montage}{section.6}% 20
+\BOOKMARK [1][-]{section.7}{Sénarios et Tests}{}% 21
+\BOOKMARK [1][-]{section.8}{Problème et Solution}{}% 22
+\BOOKMARK [2][-]{subsection.8.1}{Choix\040de\040processus\040ou\040de\040thread}{section.8}% 23
+\BOOKMARK [2][-]{subsection.8.2}{Synchronization}{section.8}% 24
+\BOOKMARK [2][-]{subsection.8.3}{Problème de conflit}{section.8}% 25
