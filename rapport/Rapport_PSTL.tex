@@ -19,7 +19,7 @@
 \usepackage{enumerate}
 
 \begin{document}
-	
+
 	\setlength{\parindent}{0pt}
 	\begin{titlepage}
 		\begin{center}
@@ -46,32 +46,32 @@
 			% Bottom of the page
 			{\large \today}
 		\end{center}
-		
+
 	\end{titlepage}
 	\clearpage
-	
+
 	\tableofcontents
 	\thispagestyle{empty}
 	\clearpage
-	
+
 	\pagestyle{fancy}
 	\lhead{Introduction}
 	\rhead{\thepage}
 	\fancyfoot{}
-	
-	
+
+
 	\section{Introduction}
-	
+
 	\subsection{Microcontrôleur}
 	Microcontrôleur est un circuit intégré largement utilisé dans les systèmes embarqués, ils consistent aux CPU, mémoire, minuterie/compteur, divers ports d'entrée et de sortie. Son plus grand avantage est sa petite taille, donc qui peut être placée à l'intérieur des dispositifs. Mais aussi ils sont soumis à des contraintes de taille, il a une petite capacité de stockage, des interfaces d'entrée et de sortie très simples et ils n'ont parfois aucun dispositif d'interface homme-machine : ni clavier, ni écran, etc. Limité par sa capacité de stockage et CPU, les programmeurs ne peuvent utiliser que des langages de bas niveau tels que le langage C et le langage d'assemblage pour la programmation, et ils ne peuvent pas utiliser de langages de programmation de haut niveau tels que JAVA et OCaml, ce qui entraîne des difficultés de développement pour les programmeurs. Nous pouvons utiliser OmciroB pour convertir le fichier OCaml en un fichier hexadécimal qui peut être exécuté dans le microcontrôleur. Néanmoins, puisque la fonction d'affichage du microcontrôleur est limitée, afin de comprendre le processus d'exécution du programme et de faciliter le débogage du programme, nous avons besoin d'un simulateur pour simuler le comportement du microcontrôleur lors de l'exécution du programme sur le PC.
 	\subsection{OmicroB}
 	OMicroB est une machine virtuelle OCaml écrite directement en langage C, il dédie à l'exécution de programmes OCaml sur microcontrôleur avec des ressources très limitées.
-	
+
 	\subsubsection{Structure de OmicroB}
 	Notre objectif de projet : le simulateur pour simuler le comportement du microcontrôleur lors de la génération de fichiers depuis OmicroB, donc il sera implémenté sur la base d'OmicroB. Il faut donc d'abord comprendre comment cela marche à partir de structure d'OmicroB.\\
-	
+
 	\clearpage
-	
+
 	\begin{figure}
 		\subfigure[Le structure de OmicroB]{
 			\begin{minipage}[t]{\linewidth}
@@ -80,7 +80,7 @@
 			\end{minipage}%
 		}%
 	\end{figure}
-	
+
 	Cette image montre chaque étape de compilation d'un programme OCaml par OMicroB.
 	\begin{enumerate}
 		\item \textbf{OCamlc} compile le fichier \textbf{.ml} avec la bibliothèque et génère un fichier \textbf{.byte}.
@@ -89,16 +89,16 @@
 		\item \textbf{g++} compile le \textbf{programme.c} et la bibliothèque de simulateur \textbf{sf-regs} puis génère le fichier exécutable \textbf{.elf}.
 		\item \textbf{arm-none-eabi-g++} compile le \textbf{programme.c} avec la bibliothèque de microcontrôleur (avrlib, microbitlib, etc) puis génère le fichier exécutable \textbf{.hex}.
 	\end{enumerate}
-	
+
 	\textbf{OMicroB} produit deux fichiers exécutables après la compilation d'un programme \textbf{OCaml}.\\
 	- \textbf{.elf} est exécutable en mode simulation, il permet de démarrer le simulateur et montrer le changement des états de pin et les effets de programme sur une interface graphique.\\
 	- \textbf{.hex} est exécutable sur Micro:bit comme l'effet fichier original OCaml exécuter sur Micro:bit.
-	
+
 	\subsection{Micro:bit}
 	Le micro:bit est un microcontrôleur qu'on utilise beaucoup dans la vie, doté d'un processeur ARM. Conçu au Royaume-Uni pour un usage éducatif dans un premier temps, le nanoordinateur est maintenant disponible au grand public dans de nombreux pays.\\
-	
+
 	La taille de la carte de circuit est de 4 cm * 5 cm, avec un processeur ARM Cortex-M0, un capteur d'accélération et un capteur magnétique, des capacités de programmation de communication Bluetooth et de connexion USB, un écran composé de 25 LED, 2 boutons programmables, USB peut être utilisé Ou une batterie externe pour alimenter. L'entrée et la sortie de l'appareil comprennent des connecteurs à trous annulaires et des connecteurs latéraux.
-	
+
 	\subsubsection{Circuit de Micro:bit}
 	Cette image montre le circuit du \textbf{microbit}, la matrice de LED se compose d'une matrice de pins de 3 * 9. Pour allumer un LED, on doit mettre le \textbf{pin\_row} correspondant au niveau \textbf{HIGH}, et mettre son \textbf{pin\_col} au niveau \textbf{LOW}.
 	\begin{figure}
@@ -109,10 +109,10 @@
 			\end{minipage}%
 		}%
 	\end{figure}
-	
+
 	\clearpage
 	Ce tableau montre la relation de position entre le circuit du \textbf{microbit} et l'écran du \textbf{microbit}.
-	
+
 	\begin{figure}
 		\subfigure[le tableau des associations entre le LED et les pins correspondants]{
 			\begin{minipage}[t]{\linewidth}
@@ -120,12 +120,12 @@
 				\includegraphics[width=0.3\textwidth]{matrice_Pins.png}
 			\end{minipage}%
 		}%
-		
+
 	\end{figure}
-	
+
 	\subsection{Problématique}
 	Selon ce qui précède, même si omicrob peut déjà convertir des fichiers OCaml en fichiers hexadécimaux qui peuvent être exécutés sur le microcontrôleur, nous avons besoin d'un simulateur plus intuitif sur le PC pour simuler le comportement du microcontrôleur afin de faciliter l'utilisation du développement et de la programmation des programmeurs. Lors du développement de ce simulateur, nous devons penser à sa structure, comment utiliser le mécanisme de synchronisation, comment afficher visuellement l'effet du fichier converti par OmicroB etc. Dans manière générale, si l'architecture des différents microcontrôleurs est différente, le simulateur sera différent. Ce que nous voulons faire est un simulateur à usage général, qui peut être utilisé pour simuler une variété de Microcontrôleur, par exemple : Micro:bit, Arduino etc. Notre idée de développement est de faire d'abord un simulateur pour Micro:bit, puis on le rendre générique. C’est à dire qu'il pourra simuler une variété de microcontrôleurs et mettre en œuvre le montage.
-	
+
 	\clearpage
 	\pagestyle{fancy}
 	\lhead{Simulateur}
@@ -133,15 +133,15 @@
 	\fancyfoot{}
 	\section{Simulateur}
 	Pour afficher les effets de programme exécuté sur un microcontrôleur, on propose un simulateur qui sert à afficher simultanément l'état de chaque pin et chaque composant pendant l'exécution du programme. Donc on peut considérer l'interpréteur de \textbf{OMicroB} comme un producteur qui produit les demandes de visualisation. Le simulateur est un consommateur, il satisfait chaque demande en visualisant les effets sur une interface graphique. Donc on peut implémenter une architecture \textbf{producteur-consommateur} pour réaliser le simulateur, un producteur transfère les demandes de l'interprèteur au consommateur, le consommateur visualise sur l'interface graphique finalement.\\
-	
+
 	Considérons la facilité du développement, nous séparons le simulateur en deux parties indépendantes, \textbf{serveur} et \textbf{client}, le serveur est producteur et client est consommateur. Ses avantages sont que :
 	\begin{enumerate}
 		\item Séparer le logiciel en deux parties indépendantes, nous pouvons développer paralèllement, c'est plus facile de travailler en groupe.
 		\item On peut mieux maintenir le simulateur. Lorsqu'il y a des erreurs générées pendant l'exécution, il plus pratique de localiser où produit l'erreur.
 	\end{enumerate}
-	
+
 	Par conséquence, on a un simulateur dont la structure est décrite par cette image, il exécute deux processus en concurrence. Chaque processus exécute plusieurs threads et travaillent asynchroniquement.
-	
+
 	\begin{figure}[htbp]
 		\subfigure[la structure de simulateur]{
 			\begin{minipage}[t]{\linewidth}
@@ -156,10 +156,10 @@
 	\begin{enumerate}
 		\item \textbf{/src/byterun/vm}.
 		Ce dossier contient les fichiers de l'interprèteur d'OMicroB, il à été réalisé en OMicroB existant. Par exemple le format des type basiques de données, le garbage collector de machine virtuelle ainsi que les définitions des instructions de code binaire. Il exécute le programme OCaml et envoie les instructions au serveur.
-		
+
 		\item \textbf{/src/byterun/simul/sf-regs.c/.h}.
 		C'est la bibliothèque des primitives de simulateur, le simulateur propose beaucoup d'API aux programmeurs d'OCaml. Ils peuvent appeler ces API dans un programme OCaml qui exécute sur un microcontrôleur, par exemple \textbf{set\_pixel 0 0 true} sert à allumer un LED de microbit. Lorsque ce API est utilisé, la fonction définie dans sf-regs.c est appelé. Elle envoie une instruction au client, puis le client allume LED sur l'interface graphique.
-		
+
 		\item \textbf{src/byterun/shared.c/.h}.
 		Ce fichier définit des structures de données partagées entre le processus client et serveur, elles sont stockées dans une mémoire partagée au fur et mesure de l'exécution de programme.
 	\end{enumerate}
@@ -168,14 +168,14 @@
 		\item \textbf{Main} traite simplement l'instruction qui vient de l'interprèteur et l'envoyer au thread \textbf{listener} de client.
 		\item \textbf{listener} reçoit l'instruction venant de \textbf{Sender} et informe \textbf{Main}.
 	\end{enumerate}
-	
+
 	Dans cette partie, nous avons réalisé des primitives spécifiques de microbit et des primitives générales.
 	\begin{enumerate}
 		\item \textbf{microbit\_print\_char(char c)} sert à afficher une lettre sur l'écran 5x5 du microbit.
 		Tout d'abord, nous convertissons les informations de tous les lettres en forme des graphiques raster dans une table en code hexadécimal 5x8 bits en bien tirer en ordre du code ASCII. Lorsqu'on recevoir une commande d'imprimer une lettre à l'écran,
 		On va calculer ASCII code correspond à cette lettre, et puis en fonction de cet ASCII code, on peut calculer le décalage dans la table de code hexadécimal correspond à cette lettre. Sortir enfin les 5 * 8 bits d'information dont il dispose. Prendre 5 * 5 bits d'entre eux et les imprimer pixel par pixel sur l'écran.\\
-		
-		Un exemple de visualiser la caractère 'A' sur la matrice des leds.
+
+		Un exemple de visualiser la caractère 'E' sur la matrice des leds.
 		\begin{enumerate}
 			\item calcule le code ASCII de 'A', c'est 65.
 			\item calcule son décalage c'est 65 * 5 = 325. (Parce que l'écran est de 5 lignes et chaque ligne est composé de 2 chiffre hexadécimal)
@@ -187,9 +187,9 @@
 			00101000\\
 			00101000
 			\item modifier les Pins de chaque LED en fonction de cette code binaire. On a finalement une image comme cela.\\
-			\includegraphics[width=0.6\textwidth]{printA.png}\\[1cm]
+			\includegraphics[width=0.6\textwidth]{printE.png}\\[1cm]
 		\end{enumerate}
-		
+
 		\item \textbf{microbit\_print\_string(char *str)} permet d'afficher une chaine de caractères, une fois qu'on a réalisé la primitive \textbf{microbit\_print\_char(char c)}. Il ne suffit de parcourir cette chaine de caractère et appeler cette primitive pour chaque caractère.
 		\item \textbf{microbit\_print\_int(int n)} sert à afficher un entier sur l'écran. On a juste besoin de formaliser cet entier en une chaine de caractères par \textbf{snprintf} et appeler \textbf{microbit\_print\_string(char *str)}.
 		\item \textbf{void microbit\_write\_pixel(int col, int row, int l)} sert à mettre l'état du pixel dont coordonnées sur l'écran est (row, col) à l, si l’est 0, cela veut dire éteindre ce LED, sinon c'est allumer ce LED.
@@ -199,21 +199,21 @@
 		\item \textbf{int microbit\_analog\_read(int p)} rend la valeur sur le pin p.
 		\item \textbf{void microbit\_serial\_write(char c)} stocke la caractère c dans un buffer.
 		\item \textbf{char microbit\_serial\_read()} lit un caractère depuis le buffer, puis le pointeur de tête incrémente 1.
-		
-		
+
+
 	\end{enumerate}
-	
-	
-	
+
+
+
 	\subsection{Client}
 	La partie client est programmée en C dans \textbf{src/byterun/client}, se compose de deux fichiers.
 	\begin{enumerate}
 		\item \textbf{client.c} définit les fonctions du travail par exemple traiter le message qui vient du côté serveur.
-		
+
 		\item \textbf{gui.c} implémente l'interface graphique par \textbf{gtk3.0}.
 		il nous montre un UI de simulateur permet d'afficher le résultat de programme et les états des Pins pendant la simulation, ainsi que l'interaction par les boutons.\\
 	\end{enumerate}
-	
+
 	\textbf{Processus Client} lance simultanément quatre threads, \textbf{Main}, \textbf{GUI}, \textbf{Sender} et \textbf{listener}.
 	\begin{enumerate}
 		\item \textbf{Main} est le premier thread principal, il traite les arguments venant de processus serveur et connecte aux mémoires partagés, par exemple la mémoire partagée pour la communication et pour le montage. Il est responsable d'exécuter les autres threads.
@@ -221,17 +221,17 @@
 		\item \textbf{Sender} sert à traiter input de l'utilisateur et envoyer l'instruction au serveur, par exemple appuyer les boutons.
 		\item \textbf{listener} reçoit l'instruction venant de serveur, en plus manipuler les composants de l'interface graphique en fonction de l'instruction.
 	\end{enumerate}
-	
-	
+
+
 	\pagestyle{fancy}
 	\lhead{Mécanisme de communication}
 	\rhead{\thepage}
 	\fancyfoot{}
-	
+
 	\section{Mécanisme de communication}
 	\subsection{Protocole de communication}
 	Pour décrire bien l'instruction, on a implémenté le protocole en plusieurs versions diverses. (S -> C) représente la direction de l'envoie est du serveur au client, (C -> S) est la direction inversée.
-	
+
 	\subsubsection{Chaine de caractère}
 	Dans la version de protocole initiale, Nous avons choisi la chaine de caractère comme le type du protocole. La raison est que c'est plus pratique de les afficher sur le terminal, on peut facilement vérifier si le protocole est correct pour chaque instruction. \\
 	La structure du protocole est (\textbf{numéro de primitive, argument1, argument2, .....}).
@@ -247,15 +247,15 @@
 		(S -> C) Modifier le pin p au niveau n. (n = 0 ou 1), envoyé par \textbf{microbit\_digital\_write}.
 		\item[-] \textbf{WRITE\_PIN(p,v)}: (5, p, v)\\
 		(S -> C) Modifier le pin p à la valeur v (0 <= v <= 1024), envoyé par \textbf{microbit\_analog\_write}.\\
-		
+
 		\item[-] \textbf{INVERSE\_PIN(p,n)}: (0, p)\\
 		(C -> S) Inverser l'état de pin qui associe avec un bouton, lorsque l'utilisateur appuie sur un bouton, ce protocole est envoyé au serveur et \textbf{serveur listener} inverse l'état de pin correspondant.
 	\end{enumerate}
-	
+
 	\subsubsection{Entier de 32 bits}
 	Après tester toutes les primitives, on est sûr que le protocole a correctement décrit chaque instruction. On commence d'améliorer ce protocole, parce que la formalisation et décodage du protocole consomment beaucoup de temps, ainsi que la chaine de caractère consomment aussi l'espace de mémoire.\\
 	Comme un integer du langage C se compose de 32 bits, ainsi que 32 bits pour le protocole est suffisant sauf pour PRINT\_IMAGE. Il ne suffit pas à afficher une image dont le nombre de pixel est supérieur à 31. Donc on supprime ce protocole dans cette version, et on réalise la primitive \textbf{microbit\_print\_image(char* ima)} en utilisant le protocole \textbf{SET\_PIXEL(x,y,val)}, il ne suffit d'envoyer le nombre de pixel fois le protocole \textbf{SET\_PIXEL(x,y,val)}.
-	
+
 	Par conséquence, la structure du nouveau protocole est \textbf{(numéro de méthode 7bits) :: arguments(25 bits)}.\\
 	7 bits pour le numéro de fonction, on peut étendre jusqu'à 128 primitives maximum, c'est très suffisant. \\ 25 bits suffit de représenter tous les arguments pour l'instant.
 	Il y à des protocoles comme ci-dessous
@@ -264,14 +264,14 @@
 		\item[-] \textbf{CLEAR\_SCREEN}: 2(32 bits), (S -> C)
 		\item[-] \textbf{SET\_PIN(p,n)}: 3(7 bits)::p(8 bits)::n(17 bits), (S -> C)
 		\item[-] \textbf{WRITE\_PIN(p,v)}: 4(7 bits)::p(8 bits)::v(17 bits), (S -> C).\\
-		
+
 		\item[-] \textbf{INVERSE\_PIN(p,n)}: 0(7 bits)::p(25 bits) (C->S).
 	\end{enumerate}
-	
-	
+
+
 	\subsection{Synchronization}
 	Deux processus exécutent en concurrence, le plus important est que comment synchroniser leur tâche ? Nous avons testé le simulateur sans synchronisation, et nous avons observé qu'il y a des protocoles qui ne sont pas visualisées sur l'interface graphique. C'est parce que la visualisation de quelques protocoles prend du temps. Par exemple éteindre tous les LEDs ou afficher une image. Donc on a implémenté un mécanisme de communication, il sert à garantir que chaque protocole peut être bien visualisée. Ce sont les étapes pour la communication entre le processus serveur et client.
-	
+
 	\textbf{Etapes pour afficher d'un protocole}
 	\begin{enumerate}
 		\item \textbf{Client listener} attend le protocole de serveur.
@@ -285,71 +285,71 @@
 		\item \textbf{Client listener} réveille le thread \textbf{server main}.
 		\item retour à l'étape 1.
 	\end{enumerate}
-	
+
 	Pour garantir que ces deux processus exécutent étape par étape. Nous avons essayé plusieurs manières diverses au fur et mesure du développement.
-	
+
 	\subsubsection{Pipe + Signal}
 	Au début, nous utilisions la pipe et le signal pour transmettre l'instruction. Pour la direction du serveur au client, le protocole est transmis par la pipe, et la direction inverse, on a utilisé le signal pour représenter le protocole, parce qu'il n'y a que événements, soit appuyer le bouton A soit le bouton B, donc on a attaché deux signaux SIGUSR1 et SIGUSR2 au ces deux bouttons, si le bouton est appuyé, le serveur reçoit SIGUSR1 ou SIGUSR2, et la fonction \textbf{handler} inverse l'état de pin correspondant.
-	
+
 	Son avantage est que l'on n'a plus besoin exécuter un thread \textbf{listener} dans le processus \textbf{serveur}. Comme la fonction \textbf{handler} exécute dès que le processus serveur reçoit le signal depuis le processus client.
-	
+
 	Mais le mécanisme de signal est très limité, le signal utilisable est divers pour le système différent, par exemple pour linux on a droit d'utiliser les signaux qui sont supérieur à 32, mais pour macOS, il y a seulement quatre signaux qu'on peut utiliser.
-	
+
 	\subsubsection{Pipes}
 	Après qu'on a constaté la limite du signal, on a essayé d'utiliser deux pipes pour la communication en deux directions. Pipe possède le mécanisme de protection, et il peut synchroniser automatiquement la communication, mais il 	génère un fichier temporaire pour la lecture et l'écriture, ainsi qu’il est moins efficace que la mémoire partagée. Donc on a finalement décidé d'utiliser la mémoire partagée.
-	
+
 	\subsubsection{Mémoire partagée}
 	La mémoire partagée sert à communiquer entre le serveur et client, puisque c'est la plus rapide manière du transport de données. Mais son inconvénient est que l'on doit implémenter un mécanisme de synchronisation afin de protéger les données partagées pour la lecture et l'écriture. Donc pour deux directions du transport (du serveur au client et du client au serveur), on a besoin de deux mémoires partagées, \textbf{shm1} est écrit par le serveur, le client le lit. \textbf{shm2} est inversé.\\
-	
+
 	Afin de synchroniser la lecture et l'écriture, on met un mutex et une variable conditionnelle pour chaque mémoire partagée. Il garant que chaque instruction de serveur peut être bien traiter.\\
-	
-	
-	
-	
+
+
+
+
 	\clearpage
 	\pagestyle{fancy}
 	\lhead{Méthodologie de réalisation}
 	\rhead{\thepage}
 	\fancyfoot{}
-	
+
 	\section{Méthodologie de réalisation}
 	Selon ce qui précède, notre objectif est de simuler les informations d'entrée et de sortie du microcontrôleur, pour réaliser les fonctionnalité du simulateur, il y a deux versions, en \textbf{haut niveau} et en \textbf{bas niveau}.
-	
+
 	\subsection{Version haut niveau}
 	\textbf{Haut niveau} est que l'on simule abstraitement un microcontrôleur, la simulation haut niveau ne reflète pas les interactions réelles entre le microcontrôleur et son environnement. On implémente les tableaux pour stocker les états de chaque composant. Dès que l'état de composant est modifié par la primitive, on modifie le tableau directement.\\
 	Par exemple le serveur appelle la primitive \textbf{microbit\_write\_pixel 0 0 true}, il ne suffit de modifier le tableau qui stock l'état des LEDs. pixels[0][0] = true.\\
-	
+
 	\textbf{Avantage}\\
 	La version est plus simple, il a juste besoin de modifier le tableau correspondant.\\
-	
+
 	\textbf{Inconvénient}\\
 	Cette méthode n'est pas générale, parce que les composants sont différents pour les microcontrôleurs divers, on ne peut pas implémenter les tableaux pour chaque microcontrôleur.
 	Si le microcontrôleur se change, nous devons réimplémenter le protocole et les tableaux des composants.
-	
-	
+
+
 	\subsection{Version bas niveau}
 	\textbf{Bas niveau} est que l'on simule réellement un microcontrôleur, afin de mieux simuler l'état de fonctionnement réel du microcontrôleur à partir de l'architecture du microcontrôleur, nous espérons modifier directement l'état du \textbf{tableau de pins}, sans avoir besoin d'autres appels de fonctions, et refléter directement les effets de ces modifications sur \textbf{l'interface graphique}. Cela fera quelques changements basés sur le haut niveau précédent.
-	
+
 	Lorsque nous voulons allumer un led, nous devons d'abord chercher son \textbf{pin} correspondant, puis mettons ce \textbf{pin} à haut niveau.\\
-	
+
 	\textbf{Avantage}
 	Le simulateur de bas niveau peut s'adapter à un grand nombre de composants électroniques externes au microcontrôleur puisque les interactions sont réalisées par la modification des états des pins. Donc le protocole \textbf{SET\_PIN} est général pour le plupart des primitives, on n'a plus besoin de protocole spécifique comme \textbf{SET\_PIXEL}. Même si le microcontrôleur branche un composant spécifique, par exemple le moteur, l'écran LCD, etc., on a juste besoin de changer un fichier du montage, et rajouter un protocole spécifique mais pas tout le simulateur.\\
-	
+
 	\textbf{Inconvénient}
 	Le traitement d'une instruction est plus compliqué, l'interaction entre le serveur et le client est plus fréquente.\\
 	Par exemple, pour allumer un \textbf{LED} du microbit, le serveur envoie une seule instruction \textbf{SET\_PIXEL(X,Y,True)} au client dans la version haut niveau. Mais dans le bas niveau, comme on a présenté au début, il est contrôlé par deux pins, le serveur doit d'abord chercher le \textbf{pin\_row} et \textbf{pin\_col}, puis envoyer deux instructions \textbf{SET\_PIN(pin\_row, 1)} et \textbf{SET\_PIN(pin\_col, 0)} au client.
-	
+
 	\clearpage
 	\pagestyle{fancy}
 	\lhead{Montage}
 	\rhead{\thepage}
 	\fancyfoot{}
-	
+
 	\section{Montage}
 	Pour réaliser un simulateur plus général, il doit supporter le montage. Cela veut dire que l'utilisateur peut ajouter les composants électronique externe comme il veut. Il peut décrire les paramètres du composant, soit des LEDs, soit des boutons, ainsi que les pins correspondants dans un fichier \textbf{circuit.txt}. Lorsque la première fois d'appeler la primitive, le simulateur est initialisé, un processus montage est exécuté par le processus serveur, il analyse \textbf{circuit.txt} par \textbf{lexer} et \textbf{parser}, ainsi que faire l'analyse sémantique pour évaluer ce fichier. Après l'évaluation, une structure qui stocke les informations du montage est transférée au processus client. Et le client peut recevoir les informations des composants du microcontrôleur depuis cette mémoire partagée, puis implémenter l'interface graphique selon ces informations.
-	
+
 	Cette fonctionnalité est réalisée dans le dossier \textbf{src/byterun/montage}, la structure est définie dans \textbf{src/byterun/simul/share.h}.
-	
+
 	\subsection{Analyser le ficher du montage}
 	Pour le montage de microcontrôleur, il a besoin d'un fichier qui stocke les informations de chaque composant de microcontrôleur comme le nombre des pins, les associations entre chaque composant et le pin correspondant. Une fois que le simulateur connait ces informations, il peut implémenter l'interface graphique et contrôler les composants par modifier l'état des pins.\\
 	Donc on a utilisé Flex, Yacc et langage C afin de réaliser un langage descriptif.
@@ -359,7 +359,7 @@
 		\item Créer les nœuds de \textbf{AST}(l'arbre d'analyse syntaxe) dans fichier \textbf{AST.c} et \textbf{AST.h}.
 		\item Réaliser les fonctions de l'évaluation dans le fichier \textbf{montage.c}.
 	\end{enumerate}
-	
+
 	\begin{figure}[htbp]
 		\subfigure[cf.exmple \textbf{circuit.txt}]{
 			\begin{minipage}[t]{\linewidth}
@@ -369,7 +369,7 @@
 			\end{minipage}%
 		}%
 	\end{figure}
-	
+
 	\textbf{Le grammaire et les mots prédéfinis}
 	\begin{enumerate}
 		\item \textbf{nom du simulateur\{l'information du montage\}}: C'est la structure du langage.
@@ -381,18 +381,18 @@
 		\item \textbf{button id: étiquette pin id}: Cette une déclaration du bouton dont l'identifiant est id et son étiquette, ainsi que le pin correspondant.
 	\end{enumerate}
 	Le nombre total de chaque composant est utilisé pour que le processus client alloue un tableau qui stocke les informations par \textbf{malloc}.
-	
-	
+
+
 	\clearpage
 	\pagestyle{fancy}
 	\lhead{Méthodologie de réalisation}
 	\rhead{\thepage}
 	\fancyfoot{}
-	
+
 	\clearpage
-	
-	
-	
+
+
+
 	\section{Scénarios et Tests}
 	Ce sont les étapes de simuler un programme ocaml par le simulateur du microbit.
 	\begin{enumerate}
@@ -427,10 +427,10 @@
 				\end{minipage}%
 			}%
 		\end{figure}
-		
+
 	\end{enumerate}
 	\clearpage
-	
+
 	\section{Problème et Solution}
 	\subsection{Problème de conflit pour micro:bit}
 	Lorsque nous voulons allumer un seulement LED sur un micro:bit, il n'y a pas de conflit. Par exemple, pour \textbf{LED 0 0}, on met \textbf{pin\_row1} au niveau \textbf{HIGH}, et \textbf{pin\_col1} au niveau \textbf{LOW}. Les effets de la simulation est comme cet image.\\
@@ -443,7 +443,7 @@
 			\end{minipage}%
 		}%
 	\end{figure}\\
-	
+
 	Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il y aura le conflit. Par exemple on allume \textbf{LED 0 0} et \textbf{LED 0 1}. On doit mettre \textbf{pin\_row1} et \textbf{pin\_row3} au niveau \textbf{HIGH}, mettre \textbf{pin\_col1} et \textbf{pin\_col4} au niveau \textbf{LOW}. Dans ce cas-là, il y aura quatre LEDs allumé.
 	\begin{enumerate}
 		\item \textbf{LED 0 0} correspond à \textbf{pin\_row1, pin\_col1}.
@@ -460,7 +460,7 @@
 			\end{minipage}%
 		}%
 	\end{figure}
-	
+
 	Pour résoudre ce problème, on a ajouté une primitive \textbf{show ()} dans la bibliothèque de micro:bit et aussi dans la bibliothèque du simulateur sf-regs.c. Lorsque l'on appelle show (). On fait les étapes suivantes.
 	\begin{enumerate}
 		\item Chercher les pixels qu'on veut allumer dont le pin\_row est le pin\_row1.
@@ -470,27 +470,27 @@
 		\item Traiter la ligne suivante.
 	\end{enumerate}
 	On allume les pixels ligne par ligne, les pixels dont le pin\_row divers clignote très vite, pour avoir un effet d'allumer tous les pixels en même temps sans conflit.
-	
-	
-	
+
+
+
 	\section{Conclusion}
 	Ce projet nous a permis de découvrir le domaine du microcontrôleur qui était obscur pour nous. Nous avons appris les caractéristiques et l'architecture du microcontrôleur et exploré les aspects de développement en fonction des restrictions du microcontrôleur.
-	
+
 	Nous avons aussi appliqué ce que nous avons appris lors du master 1 en cours de "Développement d'un langage de programmation", et en "Analyse des programmes et sémantique".
-	
+
 	Nous avons réalisé les fonctions de base du simulateur. L’interaction entre le client et le serveur du simulateur est stable, et il peut simuler l'effet du fichier OCaml compilé par OmicroB exécuté sur Micro:bit.
-	
+
 	Malheureusement, comme nous l'avons exprimé précédemment, nous n'avons pas le temps d'enrichir les fonctions du simulateur et de le tester sur des microcontrôleurs Arduino. Bien que nous ayons passé beaucoup de temps à essayer différentes méthodes pour implémenter le simulateur, nous pensons que ces tentatives ne sont pas uniquement pour ce projet. Il a également accumulé de l'expérience sur notre future de programmation.
-	
+
 	\section{Références}
 	[1]Matt Oppenheim,"Measuring the BBC micro:bit LED current draw",2019,[Online].\\
 	Available:https://www.seismicmatt.com/2019/03/06/measuring-the-bbc-microbit-led-current-draw/\\
-	
+
 	[2]Micro:bit,"Micro Bit Light Sensor",[Online].\\
 	Available:https://lancaster-university.github.io/microbit-docs/extras/light-sensing/\\
-	
+
 	[3][4]Steven Varoumas, Benoît Vaugon, Emmanuel Chailloux."A Generic Virtual Machine Approach for Programming Microcontrollers: the OMicroB Project",Toulouse, France.[Online].\\
 	Available:https://hal.sorbonne-universite.fr/hal-01705825/document\\
-	
-	
+
+
 \end{document}

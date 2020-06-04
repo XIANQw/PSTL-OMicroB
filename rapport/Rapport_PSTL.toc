@@ -12,9 +12,9 @@
 \contentsline {section}{\numberline {3}Mécanisme de communication}{9}{section.3}
 \contentsline {subsection}{\numberline {3.1}Protocole de communication}{9}{subsection.3.1}
 \contentsline {subsubsection}{\numberline {3.1.1}Chaine de caractère}{9}{subsubsection.3.1.1}
-\contentsline {subsubsection}{\numberline {3.1.2}Entier de 32 bits}{9}{subsubsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.2}Entier de 32 bits}{10}{subsubsection.3.1.2}
 \contentsline {subsection}{\numberline {3.2}Synchronization}{10}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Pipe + Signal}{10}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.1}Pipe + Signal}{11}{subsubsection.3.2.1}
 \contentsline {subsubsection}{\numberline {3.2.2}Pipes}{11}{subsubsection.3.2.2}
 \contentsline {subsubsection}{\numberline {3.2.3}Mémoire partagée}{11}{subsubsection.3.2.3}
 \contentsline {section}{\numberline {4}Méthodologie de réalisation}{12}{section.4}
