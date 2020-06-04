@@ -29,5 +29,5 @@
 \contentsline {subsection}{\numberline {7.1}Choix de processus ou de thread}{18}{subsection.7.1}% 
 \contentsline {subsection}{\numberline {7.2}Synchronization}{18}{subsection.7.2}% 
 \contentsline {subsection}{\numberline {7.3}Problème de conflit}{19}{subsection.7.3}% 
-\contentsline {section}{\numberline {8}Conclusion}{21}{section.8}% 
-\contentsline {section}{\numberline {9}Références}{21}{section.9}% 
+\contentsline {section}{\numberline {8}Conclusion}{20}{section.8}% 
+\contentsline {section}{\numberline {9}Références}{20}{section.9}% 

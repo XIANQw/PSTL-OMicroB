@@ -463,27 +463,6 @@ Pour synchroniser le transfert du protocole entre le serveur et le client, nous 
 \clearpage
 
 \subsection{Problème de conflit}
-\begin{figure}[htbp]
-	\subfigure[cf.le circuit réel de microbit]{
-		\begin{minipage}[t]{\linewidth}
-			\centering
-			\includegraphics[width=0.8\textwidth]{circuitReelMicrobit.png}
-		\end{minipage}%
-	}%
-\end{figure}
-Cet image montre le circuit du \textbf{microbit}, la matrice de LED se compose d'une matrice de pins de 3 * 9. Pour allumer un LED, on doit mettre le \textbf{pin\_row} correspondant au niveau \textbf{HIGH}, et mettre son \textbf{pin\_col} au niveau \textbf{LOW}.
-
-\begin{figure}[htbp]
-	\subfigure[cf.le tableau des associations entre le LED et les pins correspondant]{
-		\begin{minipage}[t]{\linewidth}
-			\centering
-			\includegraphics[width=0.3\textwidth]{matrice_Pins.png}
-			%\caption{fig1}
-		\end{minipage}%
-	}%
-\end{figure}
-Ce tableau montre la relation de position entre le circuit du  \textbf{microbit} et l'éran du \textbf{microbit}.
-\clearpage
 Lorsque nous voulons allumer un seulement LED, il n'y a pas de conflit. Par exemple, pour \textbf{LED 0 0}, on met \textbf{pin\_row1} au niveau \textbf{HIGH}, et \textbf{pin\_col1} au niveau \textbf{LOW}. Les effets de la simulation est comme cet image.\\
 \begin{figure}[htbp]
 	\subfigure[cf.exmple \textbf{allumer LED 0 0}]{
@@ -515,11 +494,11 @@ Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il
 \section{Conclusion}
 Ce projet nous a permis de découvrir le domaine du microcontroleur qui était obscur pour nous.Nous avons appris les caractéristiques et l'architecture du microcontroleur et exploré les aspects de développement en fonction des restrictions du microcontroleur.
 
-Nous avons aussi appliqué ce que nous avons appris lors du master 1 en cours de "Développment d'un langage de programmation",et en "Analyse des programmes et sémantique".
+Nous avons aussi appliqué ce que nous avons appris lors du master 1 en cours de "Développment d'un langage de programmation", et en "Analyse des programmes et sémantique".
 
 Nous avons réalisé les fonctions de base du simulateur.L'interaction entre le client et le serveur du simulateur est stable, et il peut simuler l'effet du fichier Ocaml compilé par OmicroB exécuté sur Micro:bit.
 
-Malheureusement,comme nous l'avons exprimé précédement, nous n'avons pas le temps d'enrichir les fonctions du simulateur et de le tester sur des microcontroleurs Arduino. Bien que nous ayons passé beaucoup de temps à essayer différentes méthodes pour implémenter le simulateur, nous pensons que ces tentatives ne sont pas uniquement pour ce projet. Il a également accumulé de l'expérience sur notre future de programmation.
+Malheureusement, comme nous l'avons exprimé précédement, nous n'avons pas le temps d'enrichir les fonctions du simulateur et de le tester sur des microcontroleurs Arduino. Bien que nous ayons passé beaucoup de temps à essayer différentes méthodes pour implémenter le simulateur, nous pensons que ces tentatives ne sont pas uniquement pour ce projet. Il a également accumulé de l'expérience sur notre future de programmation.
 
 \section{Références}
 [1]Matt Oppenheim,"Measuring the BBC micro:bit LED current draw",2019,[Online].\\
