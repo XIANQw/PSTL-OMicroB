@@ -68,18 +68,17 @@
 \section{Introduction}
 
 \subsection{Microcontrôleur}
-Microcontrôleur est un circuit intégré largement utilisé dans les systèmes embarqués,ils consistent aux CPU, mémoire, minuterie/compteur , divers ports d'entrée et de sortie.Son plus grand avantage est sa petite taille,donc qui peut être placée à l'intérieur des dispositifs.Mais aussi ils sont soumis à des contraintes de taille, il a une petite capacité de stockage, des interfaces d'entrée et de sortie très simples et ils n'ont parfois aucun dispositif d'interface homme-machine : ni clavier, ni écran, etc.Limité par sa capacité de stockage et CPU,les programmeurs ne peuvent utiliser que des langages de bas niveau tels que le langage c et le langage d'assemblage pour la programmation, et ils ne peuvent pas utiliser de langages de programmation de haut niveau tels que JAVA et Ocaml, ce qui entraîne des difficultés de développement de programme.Nous pouvons utiliser OmciroB pour convertir le fichier ocaml en un fichier hexadecimal qui peut être exécuté dans le microcontrôleur.Néanmoins,
-puisque la fonction d'affichage du microcontrôleur est limitée, afin de comprendre le processus d'exécution du programme et de faciliter le débogage du programme, nous avons besoin d'un simulateur pour simuler le comportement du microcontrôleur lors de l'exécution du programme sur le PC.
+Microcontrôleur est un circuit intégré largement utilisé dans les systèmes embarqués, ils consistent aux CPU, mémoire, minuterie/compteur, divers ports d'entrée et de sortie. Son plus grand avantage est sa petite taille, donc qui peut être placée à l'intérieur des dispositifs. Mais aussi ils sont soumis à des contraintes de taille, il a une petite capacité de stockage, des interfaces d'entrée et de sortie très simples et ils n'ont parfois aucun dispositif d'interface homme-machine : ni clavier, ni écran, etc. Limité par sa capacité de stockage et CPU, les programmeurs ne peuvent utiliser que des langages de bas niveau tels que le langage C et le langage d'assemblage pour la programmation, et ils ne peuvent pas utiliser de langages de programmation de haut niveau tels que JAVA et OCaml, ce qui entraîne des difficultés de développement pour les programmeurs.Nous pouvons utiliser OmciroB pour convertir le fichier OCaml en un fichier hexadecimal qui peut être exécuté dans le microcontrôleur. Néanmoins, puisque la fonction d'affichage du microcontrôleur est limitée, afin de comprendre le processus d'exécution du programme et de faciliter le débogage du programme, nous avons besoin d'un simulateur pour simuler le comportement du microcontrôleur lors de l'exécution du programme sur le PC.
 \subsection{OmicroB}
 OMicroB est une machine virtuelle OCaml écrite directement en langage C,il dédiée à l'exécution de programmes OCaml sur microcontrôleur avec des ressources très limitées.\\
 
 \subsubsection{Structure de OmicroB}
-Notre objectif de projet:le simulateur pour simuler simuler le comportement du microcontrôleur lors de la génération de fichiers depuis OmicroB,donc il sera implémenté sur la base d'OmicroB. Il faut donc d'abord comprendre comment ça marche à partir de structure de OmicroB.\\
+Notre objectif de projet:le simulateur pour simuler le comportement du microcontrôleur lors de la génération de fichiers depuis OmicroB, donc il sera implémenté sur la base d'OmicroB. Il faut donc d'abord comprendre comment cela marche à partir de structure d'OmicroB.\\
 
 \clearpage
 
 \begin{figure}
-	\subfigure[cf.le structure de OmicroB]{
+	\subfigure[Le structure de OmicroB]{
 		\begin{minipage}[t]{\linewidth}
 			\centering
 			\includegraphics[width=\textwidth]{StructureProgramme.png}
@@ -89,17 +88,17 @@ Notre objectif de projet:le simulateur pour simuler simuler le comportement du m
 
 Cet image montre chaque étape de compilation d'un programme OCaml par OMicroB.
 \begin{enumerate}
-	\item \textbf{ocamlc} compile le fichier \textbf{.ml} avec la bibliothèque et génére un fichier \textbf{.byte}.
-  \item \textbf{ocamlclean} traite le fichier généré \textbf{.byte}. L'outil Ocamlclean qui transforme le bytecode OCaml pour supprimer les fermetures inutilisées du tas. Ce processus de nettoyage de bytecode est essentiel pour exécuter des programmes non triviaux sur des appareils avec un espace mémoire limité.[3]
- \item \textbf{bc2c} est le compilateur de \textbf{OMicroB}, il permet de transférer le code binaire à un programme \textbf{.c}. L'outil bc2c prend en entrée la sortie du fichier de bytecode par le linker OCaml ocamlc ou le nettoyeur de bytecode ocamlclean. Il effectue ensuite une analyse et des transformations de code pour optimiser et compacter le bytecode, et produit enfin un fichier source C définissant les constantes et les tableaux statiques nécessaires à l'implémentation OMicroB de la machine virtuelle OCaml décrite plus loin.[4]
+	\item \textbf{OCamlc} compile le fichier \textbf{.ml} avec la bibliothèque et génére un fichier \textbf{.byte}.
+  \item \textbf{OCamlclean} traite le fichier généré \textbf{.byte}. L'outil OCamlclean qui transforme le bytecode OCaml pour supprimer les fermetures inutilisées du tas. Ce processus de nettoyage de bytecode est essentiel pour exécuter des programmes non triviaux sur des appareils avec un espace mémoire limité.[3]
+ \item \textbf{bc2c} est le compilateur de \textbf{OMicroB}, il permet de transférer le code binaire à un programme \textbf{.c}. L'outil bc2c prend en entrée la sortie du fichier de bytecode par le linker OCaml OCamlc ou le nettoyeur de bytecode OCamlclean. Il effectue ensuite une analyse et des transformations de code pour optimiser et compacter le bytecode, et produit enfin un fichier source C définissant les constantes et les tableaux statiques nécessaires à l'implémentation OMicroB de la machine virtuelle OCaml décrite plus loin.[4]
 	\item \textbf{g++} compile le \textbf{programme.c} et la bibliothèque de simulateur \textbf{sf-regs} puis génère le fichier exécutable \textbf{.elf}.
 	\item \textbf{arm-none-eabi-g++} compile le \textbf{programme.c} avec la bibliothèque de microcontrôleur (avrlib, microbitlib, etc) puis génére le fichier exécutable \textbf{.hex}.\\
 \end{enumerate}
 
-\textbf{OMicroB} produit deux fichiers exécutables après la compilation d'  un programme \textbf{OCaml}.
+\textbf{OMicroB} produit deux fichiers exécutables après la compilation d'un programme \textbf{OCaml}.
 
 - \textbf{.elf} est exécutable en mode simulation, il permet de démarrer le simulateur et montrer le changement des états de pin et les effets de programme sur une interface graphique.\\
-- \textbf{.hex} est exécutable sur Micro:bit.
+- \textbf{.hex} est exécutable sur Micro:bit comme l'effet fichier origin OCaml exécuter sur Micro:bit.
 
 \subsection{Micro:bit}
 Le micro:bit est un microcontrôleur qu'on utilise beaucoup dans la vie, doté d'un processeur ARM. Conçu au Royaume-Uni pour un usage éducatif dans un premier temps, le nanoordinateur est maintenant disponible au grand public dans de nombreux pays.\\
@@ -132,7 +131,7 @@ Ce tableau montre la relation de position entre le circuit du  \textbf{microbit}
 
 \clearpage
 \subsection{Problématique}
-Selon ce qui précède, même si omicrob peut déjà convertir des fichiers ocaml en fichiers hexadécimaux qui peuvent être exécutés sur le microcontrôleur, nous avons besoin d'un simulateur plus intuitif sur le PC pour simuler le comportement du microcontrôleur afin de faciliter l'utilisation du développement et de la programmation des programmeurs. Lors du développement de ce simulateur, nous devons penser à sa structure, comment utiliser le mécanisme de synchronisation, comment afficher visuellement l'effet du fichier converti par OmicroB etc.Dans manière générale, si l'architecture des différents microcontrôleurs est différente, le simulateur sera différent. Ce que nous voulons faire est un simulateur à usage général, qui peut être utilisé pour simuler une variété de Microcontrôleur, par exemple: Micro:bit,Arduino etc. Notre idée de développement est de faire d'abord un simulateur pour Micro:bit, puis on le rendre générique.C'est à dire qu'il pourra simuleur une variété de microcontrôleurs et mettre en œuvre le montage.
+Selon ce qui précède, même si omicrob peut déjà convertir des fichiers OCaml en fichiers hexadécimaux qui peuvent être exécutés sur le microcontrôleur, nous avons besoin d'un simulateur plus intuitif sur le PC pour simuler le comportement du microcontrôleur afin de faciliter l'utilisation du développement et de la programmation des programmeurs. Lors du développement de ce simulateur, nous devons penser à sa structure, comment utiliser le mécanisme de synchronisation, comment afficher visuellement l'effet du fichier converti par OmicroB etc.Dans manière générale, si l'architecture des différents microcontrôleurs est différente, le simulateur sera différent. Ce que nous voulons faire est un simulateur à usage général, qui peut être utilisé pour simuler une variété de Microcontrôleur, par exemple: Micro:bit,Arduino etc. Notre idée de développement est de faire d'abord un simulateur pour Micro:bit, puis on le rendre générique.C'est à dire qu'il pourra simuleur une variété de microcontrôleurs et mettre en œuvre le montage.
 
 \clearpage
 \pagestyle{fancy}
@@ -405,7 +404,7 @@ Donc on a utilisé Flex, Yacc et langage C afin de réaliser un langage descript
 
 
 \section{Scénarios et Tests}
-Ce sont les étapes de simuler un programme ocaml par la simulateur du microbit.
+Ce sont les étapes de simuler un programme OCaml par la simulateur du microbit.
 \begin{enumerate}
 	\item Charger l'information du montage par un fichier \textbf{circuit.txt}.
 	\item Le processus montage analyse ce fichier et génère une structure du montage, en plus envoie au serveur et au client par le mémoire partagée \textbf{envid}.
@@ -431,7 +430,7 @@ Ce sont les étapes de simuler un programme ocaml par la simulateur du microbit.
 	\item Le client affiche les effets du programme.
 	\begin{figure}[htbp]
 		\centering
-		\subfigure[un programme ocaml]{
+		\subfigure[un programme OCaml]{
 			\begin{minipage}[t]{0.3\linewidth}
 				\centering
 				\includegraphics[width=\textwidth]{printAprog.png}
@@ -451,7 +450,7 @@ Ce sont les étapes de simuler un programme ocaml par la simulateur du microbit.
 
 \section{Problème et Solution}
 \subsection{Choix de processus ou de thread}
-Quand on désigne l'architecture du simulateur, on a deux choix pour le côté du serveur et client. Soit on les sépare en deux threads, soit deux processus. Les avantages du thread est que c'est plus facile de partager les données et réaliser la synchronization. Néanmoins, la partie serveur est compilé par \textbf{ocamlc} dans une étape de la compilation, et nous utilisons \textbf{gtk+3.0} pour réaliser l'interface graphique, le compilateur \textbf{ocamlc} ne peut pas compiler la bibliothèque de \textbf{gtk+3.0}, donc on sépare le serveur et le client en deux processus.
+Quand on désigne l'architecture du simulateur, on a deux choix pour le côté du serveur et client. Soit on les sépare en deux threads, soit deux processus. Les avantages du thread est que c'est plus facile de partager les données et réaliser la synchronization. Néanmoins, la partie serveur est compilé par \textbf{OCamlc} dans une étape de la compilation, et nous utilisons \textbf{gtk+3.0} pour réaliser l'interface graphique, le compilateur \textbf{OCamlc} ne peut pas compiler la bibliothèque de \textbf{gtk+3.0}, donc on sépare le serveur et le client en deux processus.
 
 
 \subsection{Synchronization}
@@ -496,7 +495,7 @@ Ce projet nous a permis de découvrir le domaine du microcontroleur qui était o
 
 Nous avons aussi appliqué ce que nous avons appris lors du master 1 en cours de "Développment d'un langage de programmation", et en "Analyse des programmes et sémantique".
 
-Nous avons réalisé les fonctions de base du simulateur.L'interaction entre le client et le serveur du simulateur est stable, et il peut simuler l'effet du fichier Ocaml compilé par OmicroB exécuté sur Micro:bit.
+Nous avons réalisé les fonctions de base du simulateur.L'interaction entre le client et le serveur du simulateur est stable, et il peut simuler l'effet du fichier OCaml compilé par OmicroB exécuté sur Micro:bit.
 
 Malheureusement, comme nous l'avons exprimé précédement, nous n'avons pas le temps d'enrichir les fonctions du simulateur et de le tester sur des microcontroleurs Arduino. Bien que nous ayons passé beaucoup de temps à essayer différentes méthodes pour implémenter le simulateur, nous pensons que ces tentatives ne sont pas uniquement pour ce projet. Il a également accumulé de l'expérience sur notre future de programmation.
 
