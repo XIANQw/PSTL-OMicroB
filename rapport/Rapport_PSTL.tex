@@ -201,6 +201,8 @@ Dans cette partie, nous avons réalisé des primitives spécifiques de microbit 
 	\item \textbf{microbit\_print\_string(char *str)} permet d'afficher une chaine de carcatères, une fois qu'on a réalisé la primitive \textbf{microbit\_print\_char(char c)}. Il ne suffit de parcourir cette chaine de caractère et appeler cette primitive pour chaque caractère.
 	\item \textbf{microbit\_print\_int(int n)} sert à afficher un entier sur l'écran. On a juste besoin de formaliser cet entier en une chaine de caractères par \textbf{snprintf} et appeler \textbf{microbit\_print\_string(char *str)}.
 	\item \textbf{void microbit\_write\_pixel(int col, int row, int l)} sert à mettre l'état du pixel dont coordonées sur l'écran est (row, col) à l, si l est 0, cela veut dire éteindre ce LED, sinon c'est allumer ce LED.
+	\item \textbf{void microbit\_digital\_write(int p, int l)} peut modifier l'état de pin p à l, (l=0 ou 1).
+	\item \textbf{int microbit_digital_read(int p)}
 
 \end{enumerate}
 
