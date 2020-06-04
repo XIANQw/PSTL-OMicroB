@@ -189,18 +189,23 @@
 			\item modifier les Pins de chaque LED en fonction de cette code binaire. On a finalement une image comme cela.\\
 			\includegraphics[width=0.6\textwidth]{printE.png}\\[1cm]
 		\end{enumerate}
-
 		\item \textbf{microbit\_print\_string(char *str)} permet d'afficher une chaine de caractères, une fois qu'on a réalisé la primitive \textbf{microbit\_print\_char(char c)}. Il ne suffit de parcourir cette chaine de caractère et appeler cette primitive pour chaque caractère.
+		
 		\item \textbf{microbit\_print\_int(int n)} sert à afficher un entier sur l'écran. On a juste besoin de formaliser cet entier en une chaine de caractères par \textbf{snprintf} et appeler \textbf{microbit\_print\_string(char *str)}.
-		\item \textbf{void microbit\_write\_pixel(int col, int row, int l)} sert à mettre l'état du pixel dont coordonnées sur l'écran est (row, col) à l, si l’est 0, cela veut dire éteindre ce LED, sinon c'est allumer ce LED.
-		\item \textbf{void microbit\_digital\_write(int p, int l)} permet de mettre l'état de pin p au niveau l (l=0 ou 1), si l=0, cela veut dire du niveau LOW, sinon c'est niveau HIGH.
-		\item \textbf{int microbit\_digital\_read(int p)} sert à rendre le niveau de pin p.
-		\item \textbf{void microbit\_analog\_write(int p, int l)} peut écrire une valeur sur le pin p, (0 <= l < 1024), cette primitive modifie le tableau pin\_val qui stocke les valeur des pins.
-		\item \textbf{int microbit\_analog\_read(int p)} rend la valeur sur le pin p.
+		
+		\item \textbf{void microbit\_write\_pixel(int col, int row, int l)} sert à mettre l'état du pixel dont coordonnées sur l'écran est (row, col) à l, si l’est 0, cela veut dire éteindre ce LED, sinon c'est allumer ce LED. Comme cette primitive modifie l'état de pixel, donc il envoie un message au client pour afficher la modification.
+		
+		\item \textbf{void microbit\_digital\_write(int p, int l)} permet de mettre l'état de pin p au niveau l (l=0 ou 1), si l=0, cela veut dire du niveau LOW, sinon c'est niveau HIGH. Comme cette primitive modifie l'état de pin, donc il envoie un message au client pour visualiser la modification.
+		
+		\item \textbf{int microbit\_digital\_read(int p)} sert à rendre le niveau de pin p, il ne suffit de rendre la valeur du tableau des états de pin sur l'indice p, donc il ne communique pas avec le client.
+		
+		\item \textbf{void microbit\_analog\_write(int p, int l)} peut écrire une valeur sur le pin p, (0 <= l < 1024), cette primitive modifie le tableau pin\_val qui stocke les valeur des pins. Il doit envoyer un message au client pour afficher la nouvelle valeur de pin p.
+		
+		\item \textbf{int microbit\_analog\_read(int p)} a juste besoin de rendre la valeur du tableaux \textbf{pin\_val} selon l'indice p. Donc il n'envoie pas de message au client. 
+		
 		\item \textbf{void microbit\_serial\_write(char c)} stocke la caractère c dans un buffer.
+		
 		\item \textbf{char microbit\_serial\_read()} lit un caractère depuis le buffer, puis le pointeur de tête incrémente 1.
-
-
 	\end{enumerate}
 
 

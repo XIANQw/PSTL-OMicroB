@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.12.14)  5 JUN 2020 01:37
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.12.14)  5 JUN 2020 01:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1690,67 +1690,67 @@ Overfull \hbox (12.9427pt too wide) in paragraph at lines 194--195
  []
 
 Missing character: There is no ’ in font ec-lmr10!
-
-Underfull \hbox (badness 10000) in paragraph at lines 213--215
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 218--220
 
  []
 
-[8]
-Overfull \hbox (31.36986pt too wide) in paragraph at lines 242--244
+
+Overfull \hbox (31.36986pt too wide) in paragraph at lines 247--249
 \T1/lmr/m/n/10 (S -> C) Mo-di-fier l'état du pixel des co-or-don-nées x et y à 
 val, en-voyé par \T1/lmr/bx/n/10 mi-cro-bit_write_pixel(int
  []
 
 
-Overfull \hbox (10.6406pt too wide) in paragraph at lines 248--250
+Overfull \hbox (10.6406pt too wide) in paragraph at lines 253--255
 \T1/lmr/m/n/10 (S -> C) Mo-di-fier le pin p à la va-leur v (0 <= v <= 1024), en
 -voyé par \T1/lmr/bx/n/10 mi-cro-bit_analog_write\T1/lmr/m/n/10 . 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 248--250
+Underfull \hbox (badness 10000) in paragraph at lines 253--255
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 266--267
+Underfull \hbox (badness 10000) in paragraph at lines 271--272
 
  []
 
 [10]
 Missing character: There is no ’ in font ec-lmr10!
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--303
+Underfull \hbox (badness 10000) in paragraph at lines 307--308
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 304--305
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 319--321
+Underfull \hbox (badness 10000) in paragraph at lines 324--326
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 322--324
+Underfull \hbox (badness 10000) in paragraph at lines 327--329
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 333--334
+Underfull \hbox (badness 10000) in paragraph at lines 338--339
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 335--337
+Underfull \hbox (badness 10000) in paragraph at lines 340--342
 
  []
 
 
-Overfull \hbox (64.30618pt too wide) in paragraph at lines 338--341
+Overfull \hbox (64.30618pt too wide) in paragraph at lines 343--346
 \T1/lmr/m/n/10 Par exemple, pour al-lu-mer un \T1/lmr/bx/n/10 LED \T1/lmr/m/n/1
 0 du mi-cro-bit, le ser-veur en-voie une seule ins-truc-tion \T1/lmr/bx/n/10 SE
 T_PIXEL(X,Y,True)
@@ -1763,12 +1763,12 @@ Missing character: There is no œ in font ec-lmr10!
 File: circuit_ex.png Graphic file (type bmp)
 <circuit_ex.png>
 
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 370--371
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 375--376
 [][][] 
  []
 
 
-Overfull \hbox (3.7816pt too wide) in paragraph at lines 376--377
+Overfull \hbox (3.7816pt too wide) in paragraph at lines 381--382
 []\T1/lmr/bx/n/10 nb_pins (num_row, num_col) \T1/lmr/m/n/10 : \T1/lmr/bx/n/10 n
 um_row \T1/lmr/m/n/10 est le nombre de pins de ligne(row), \T1/lmr/bx/n/10 num_
 col
@@ -1790,19 +1790,19 @@ File: printE.png Graphic file (type bmp)
 File: no-conflict.png Graphic file (type bmp)
 <no-conflict.png>
 
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 444--445
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 449--450
 [][][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 436--446
+Underfull \hbox (badness 10000) in paragraph at lines 441--451
 
  []
 
 File: conflit.png Graphic file (type bmp)
 <conflit.png>
 
-Overfull \hbox (3.33333pt too wide) in paragraph at lines 461--462
+Overfull \hbox (3.33333pt too wide) in paragraph at lines 466--467
 [][][] 
  []
 
@@ -1811,38 +1811,38 @@ Overfull \hbox (3.33333pt too wide) in paragraph at lines 461--462
 ]
 Missing character: There is no ’ in font ec-lmr10!
 
-Overfull \hbox (10.3613pt too wide) in paragraph at lines 486--488
+Overfull \hbox (10.3613pt too wide) in paragraph at lines 491--493
 \T1/lmr/m/n/10 Available :https ://www.seismicmatt.com/2019/03/06/measuring-the
 -bbc-microbit-led-current-draw/ 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 486--488
+Underfull \hbox (badness 10000) in paragraph at lines 491--493
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 489--491
+Underfull \hbox (badness 10000) in paragraph at lines 494--496
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 492--494
+Underfull \hbox (badness 10000) in paragraph at lines 497--499
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 496.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 501.
 [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 496.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 501.
  (./Rapport_PSTL.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 496.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 496.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 496.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 501.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 501.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 501.
  ) 
 Here is how much of TeX's memory you used:
  28344 strings out of 493007
  523136 string characters out of 6136718
- 626287 words of memory out of 5000000
+ 625287 words of memory out of 5000000
  32067 multiletter control sequences out of 15000+600000
  575355 words of font info for 58 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
