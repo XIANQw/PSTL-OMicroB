@@ -8,25 +8,21 @@
 \BOOKMARK [1][-]{section.2}{Simulateur}{}% 8
 \BOOKMARK [2][-]{subsection.2.1}{Serveur}{section.2}% 9
 \BOOKMARK [2][-]{subsection.2.2}{Client}{section.2}% 10
-\BOOKMARK [2][-]{subsection.2.3}{Montage}{section.2}% 11
-\BOOKMARK [1][-]{section.3}{Mécanisme de communication}{}% 12
-\BOOKMARK [2][-]{subsection.3.1}{Protocole\040de\040communication}{section.3}% 13
-\BOOKMARK [3][-]{subsubsection.3.1.1}{Chaine de caractère}{subsection.3.1}% 14
-\BOOKMARK [3][-]{subsubsection.3.1.2}{Entier\040de\04032\040bits}{subsection.3.1}% 15
-\BOOKMARK [2][-]{subsection.3.2}{Synchronization}{section.3}% 16
-\BOOKMARK [3][-]{subsubsection.3.2.1}{Pipe\040+\040Signal}{subsection.3.2}% 17
-\BOOKMARK [3][-]{subsubsection.3.2.2}{Pipes}{subsection.3.2}% 18
-\BOOKMARK [3][-]{subsubsection.3.2.3}{Mémoire partagée}{subsection.3.2}% 19
-\BOOKMARK [1][-]{section.4}{Méthodologie de réalisation}{}% 20
-\BOOKMARK [2][-]{subsection.4.1}{Version\040haut\040niveau}{section.4}% 21
-\BOOKMARK [2][-]{subsection.4.2}{Version\040bas\040niveau}{section.4}% 22
-\BOOKMARK [1][-]{section.5}{Fonctionalités Implémentées}{}% 23
-\BOOKMARK [2][-]{subsection.5.1}{Visualiser\040du\040texte\040sur\040la\040matrice\040des\040leds}{section.5}% 24
-\BOOKMARK [2][-]{subsection.5.2}{Analyser\040le\040ficher\040du\040montage}{section.5}% 25
-\BOOKMARK [1][-]{section.6}{Scénarios et Tests}{}% 26
-\BOOKMARK [1][-]{section.7}{Problème et Solution}{}% 27
-\BOOKMARK [2][-]{subsection.7.1}{Choix\040de\040processus\040ou\040de\040thread}{section.7}% 28
-\BOOKMARK [2][-]{subsection.7.2}{Synchronization}{section.7}% 29
-\BOOKMARK [2][-]{subsection.7.3}{Problème de conflit}{section.7}% 30
-\BOOKMARK [1][-]{section.8}{Conclusion}{}% 31
-\BOOKMARK [1][-]{section.9}{Références}{}% 32
+\BOOKMARK [1][-]{section.3}{Mécanisme de communication}{}% 11
+\BOOKMARK [2][-]{subsection.3.1}{Protocole\040de\040communication}{section.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Chaine de caractère}{subsection.3.1}% 13
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Entier\040de\04032\040bits}{subsection.3.1}% 14
+\BOOKMARK [2][-]{subsection.3.2}{Synchronization}{section.3}% 15
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Pipe\040+\040Signal}{subsection.3.2}% 16
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Pipes}{subsection.3.2}% 17
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Mémoire partagée}{subsection.3.2}% 18
+\BOOKMARK [1][-]{section.4}{Méthodologie de réalisation}{}% 19
+\BOOKMARK [2][-]{subsection.4.1}{Version\040haut\040niveau}{section.4}% 20
+\BOOKMARK [2][-]{subsection.4.2}{Version\040bas\040niveau}{section.4}% 21
+\BOOKMARK [1][-]{section.5}{Montage}{}% 22
+\BOOKMARK [2][-]{subsection.5.1}{Analyser\040le\040ficher\040du\040montage}{section.5}% 23
+\BOOKMARK [1][-]{section.6}{Scénarios et Tests}{}% 24
+\BOOKMARK [1][-]{section.7}{Problème et Solution}{}% 25
+\BOOKMARK [2][-]{subsection.7.1}{Problème de conflit pour micro:bit}{section.7}% 26
+\BOOKMARK [1][-]{section.8}{Conclusion}{}% 27
+\BOOKMARK [1][-]{section.9}{Références}{}% 28
