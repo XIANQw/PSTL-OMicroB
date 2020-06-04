@@ -82,7 +82,7 @@ Notre objectif de projet:le simulateur pour simuler simuler le comportement du m
 	\subfigure[cf.le structure de OmicroB]{
 		\begin{minipage}[t]{\linewidth}
 			\centering
-			\includegraphics[width=\textwidth]{StructureProgramme.png}		
+			\includegraphics[width=\textwidth]{StructureProgramme.png}
 		\end{minipage}%
 	}%
 \end{figure}
@@ -90,8 +90,8 @@ Notre objectif de projet:le simulateur pour simuler simuler le comportement du m
 Cet image montre chaque étape de compilation d'un programme OCaml par OMicroB.
 \begin{enumerate}
 	\item \textbf{ocamlc} compile le fichier \textbf{.ml} avec la bibliothèque et génére un fichier \textbf{.byte}.
-	\item \textbf{ocamlclean} traite le fichier généré \textbf{.byte}.
-	\item \textbf{bc2c} est le compilateur de \textbf{OMicroB}, il permet de transférer le code binaire à un programme \textbf{.c}.
+  \item \textbf{ocamlclean} traite le fichier généré \textbf{.byte}. L'outil Ocamlclean qui transforme le bytecode OCaml pour supprimer les fermetures inutilisées du tas. Ce processus de nettoyage de bytecode est essentiel pour exécuter des programmes non triviaux sur des appareils avec un espace mémoire limité.[3]
+ \item \textbf{bc2c} est le compilateur de \textbf{OMicroB}, il permet de transférer le code binaire à un programme \textbf{.c}. L'outil bc2c prend en entrée la sortie du fichier de bytecode par le linker OCaml ocamlc ou le nettoyeur de bytecode ocamlclean. Il effectue ensuite une analyse et des transformations de code pour optimiser et compacter le bytecode, et produit enfin un fichier source C définissant les constantes et les tableaux statiques nécessaires à l'implémentation OMicroB de la machine virtuelle OCaml décrite plus loin.[4]
 	\item \textbf{g++} compile le \textbf{programme.c} et la bibliothèque de simulateur \textbf{sf-regs} puis génère le fichier exécutable \textbf{.elf}.
 	\item \textbf{arm-none-eabi-g++} compile le \textbf{programme.c} avec la bibliothèque de microcontrôleur (avrlib, microbitlib, etc) puis génére le fichier exécutable \textbf{.hex}.\\
 \end{enumerate}
@@ -99,7 +99,7 @@ Cet image montre chaque étape de compilation d'un programme OCaml par OMicroB.
 \textbf{OMicroB} produit deux fichiers exécutables après la compilation d'  un programme \textbf{OCaml}.
 
 - \textbf{.elf} est exécutable en mode simulation, il permet de démarrer le simulateur et montrer le changement des états de pin et les effets de programme sur une interface graphique.\\
-- \textbf{.hex} est exécutable sur un microcontrôleur.
+- \textbf{.hex} est exécutable sur Micro:bit.
 
 \subsection{Micro:bit}
 Le micro:bit est un microcontrôleur qu'on utilise beaucoup dans la vie, doté d'un processeur ARM. Conçu au Royaume-Uni pour un usage éducatif dans un premier temps, le nanoordinateur est maintenant disponible au grand public dans de nombreux pays.\\
@@ -124,10 +124,10 @@ Ce tableau montre la relation de position entre le circuit du  \textbf{microbit}
 	\subfigure[le tableau des associations entre le LED et les pins correspondants]{
 		\begin{minipage}[t]{\linewidth}
 			\centering
-			\includegraphics[width=0.3\textwidth]{matrice_Pins.png}	
+			\includegraphics[width=0.3\textwidth]{matrice_Pins.png}
 		\end{minipage}%
 	}%
-	
+
 \end{figure}
 
 \clearpage
@@ -179,10 +179,10 @@ La partie serveur est codée en C dans "/src/byterun/", il contient des fichiers
 
 Dans cette partie, nous avons réalisé des primitives spécifiques de microbit et des primitives générales.
 \begin{enumerate}
-	\item \textbf{microbit\_print\_char(char c)} sert à afficher une lettre sur l'écran 5x5 du microbit. 
+	\item \textbf{microbit\_print\_char(char c)} sert à afficher une lettre sur l'écran 5x5 du microbit.
 	Tout d'abord, nous convertissons les informations de tous les lettres en forme des graphiques raster dans une table en code hexadécimal 5x8 bits en bien tirer par order du code ASCII. Lorsqu'on recevoir une commande d'imprimer une lettre à l'écran,
 	on va calculer ASCII code correspond à cette lettre, et puis en fonction de ce ASCII code ,on peut calculer le décalage dans la table de code hexadécimal correspond à cette lettre. Sortir enfin les 5 * 8 bits d'information dont il dispose. Prendre 5 * 5 bits d'entre eux et les imprimer pixel par pixel sur l'écran.\\
-	
+
 	Une exemple de visualiser la caractère 'A' sur la matrice des leds.
 	\begin{enumerate}
 		\item calcule le code ASCII de 'A', c'est 65.
@@ -195,9 +195,9 @@ Dans cette partie, nous avons réalisé des primitives spécifiques de microbit 
 		00101000\\
 		00101000
 		\item modifier les Pins de chaque LED en fonction de cette code binaire. On a finalement une image comme cela.\\
-		\includegraphics[width=0.6\textwidth]{printA.png}\\[1cm]	
+		\includegraphics[width=0.6\textwidth]{printA.png}\\[1cm]
 	\end{enumerate}
-	
+
 	\item \textbf{microbit\_print\_string(char *str)} permet d'afficher une chaine de carcatères, une fois qu'on a réalisé la primitive \textbf{microbit\_print\_char(char c)}. Il ne suffit de parcourir cette chaine de caractère et appeler cette primitive pour chaque caractère.
 	\item \textbf{microbit\_print\_int(int n)} sert à afficher un entier sur l'écran. On a juste besoin de formaliser cet entier en une chaine de caractères par \textbf{snprintf} et appeler \textbf{microbit\_print\_string(char *str)}.
 	\item \textbf{void microbit\_write\_pixel(int col, int row, int l)} sert à mettre l'état du pixel dont coordonées sur l'écran est (row, col) à l, si l est 0, cela veut dire éteindre ce LED, sinon c'est allumer ce LED.
@@ -234,7 +234,7 @@ Cette fonctionnalité est réalisée dans le dossier \textbf{src/byterun/montage
 \subsection{Protocole de communication}
 Pour décrire bien l'instruction, on a implémenté le protocole en plusieurs versions diverses. (S -> C) représente la direction de l'envoie est du serveur au client, (C -> S) est la direction inversée.
 
-\subsubsection{Chaine de caractère} 
+\subsubsection{Chaine de caractère}
 Dans la version de protocole initiale, Nous avons choisi la chaine de caractère comme le type du protocole. La raison est que c'est plus pratique de les afficher sur le terminal, on peut facilement vérifier si le protocole est correct pour chaque instruction. \\
 La structure du protocole est (\textbf{numéro de primitive, argument1, argument2, .....}).
 Pour cette version, nous avons réalisé les protocoles.
@@ -249,9 +249,9 @@ Pour cette version, nous avons réalisé les protocoles.
 	(S -> C) Modifier le pin p au niveau n. (n = 0 ou 1), envoyé par \textbf{microbit\_digital\_write}.
 	\item[-] \textbf{WRITE\_PIN(p,v)}: (5, p, v)\\
 	(S -> C) Modifier le pin p à la valeur v (0 <= v <= 1024), envoyé par \textbf{microbit\_analog\_write}.\\
-	
+
 	\item[-] \textbf{INVERSE\_PIN(p,n)}: (0, p)\\
-	(C -> S) Inverser l'état de pin qui associéte avec un bouton, lorsque l'utilisateur appuie sur un bouton, ce protocole est envoyé au serveur et \textbf{serveur listener} inverse l'état de pin correspondant. 
+	(C -> S) Inverser l'état de pin qui associéte avec un bouton, lorsque l'utilisateur appuie sur un bouton, ce protocole est envoyé au serveur et \textbf{serveur listener} inverse l'état de pin correspondant.
 \end{enumerate}
 
 \subsubsection{Entier de 32 bits}
@@ -266,7 +266,7 @@ Il y à des protocoles comme ci-dessous
 	\item[-] \textbf{CLEAR\_SCREEN}: 2(32 bits), (S -> C)
 	\item[-] \textbf{SET\_PIN(p,n)}: 3(7 bits)::p(8 bits)::n(17 bits), (S -> C)
 	\item[-] \textbf{WRITE\_PIN(p,v)}: 4(7 bits)::p(8 bits)::v(17 bits), (S -> C).\\
-	
+
 	\item[-] \textbf{INVERSE\_PIN(p,n)}: 0(7 bits)::p(25 bits) (C->S).
 \end{enumerate}
 
@@ -293,7 +293,7 @@ Pour garantir que ces deux processus exécutent étape par étpae. Nous avons es
 \subsubsection{Pipe + Signal}
 Au début, nous utilisions le pipe et le signal pour transmettre l'instruction. Pour la direction du serveur au client, le protocole est transmis par le pipe, et la direction inverse, on a utilisé le signal pour représenter le protocole, parce qu'il n'y a que événements, soit appuyer le bouton A soit le boutton B, donc on a attaché deux signaux SIGUSR1 et SIGUSR2 au ces deux bouttons, si le boutton est appuyé, le serveur reçoit SIGUSR1 ou SIGUSR2, et la fonction \textbf{handler} inverse l'état de pin correspondant.
 
-Son avantage est que l'on n'a plus besoin exécuter un thread \textbf{listener} dans le processus \textbf{serveur}. Comme la fonction \textbf{handler} exécute dès que le processus serveur reçoit le sigal depuis le processus client. 
+Son avantage est que l'on n'a plus besoin exécuter un thread \textbf{listener} dans le processus \textbf{serveur}. Comme la fonction \textbf{handler} exécute dès que le processus serveur reçoit le sigal depuis le processus client.
 
 Mais le mécanisme de signal est très limité, le signal utilisable est divers pour le système différent, par exemple pour linux on a droit d'utiliser les signaux qui sont supérieur à 32, mais pour macOS, il y a seulement quatres signaux qu'on peut utiliser.
 
@@ -457,7 +457,7 @@ Quand on désigne l'architecture du simulateur, on a deux choix pour le côté d
 \subsection{Synchronization}
 Comme ce que l'on a présenté, le serveur envoie les protocoles au client, et le client visualise simultanément les états de chaque composant, mais pour quelque protocole par exemple \textbf{CLEARSCREEN}, il prend du temps parce qu'il faut éteindre tous les LEDs. Donc s'il n'y a pas de mécanisme de synchronization afin de garantir que le nouveau protocole arrive après le traitement du protocole précédent, il risque de perdre quelques instructions.
 
-Pour synchroniser le transfert du protocole entre le serveur et le client, nous avons essayé plusieurs méthodes 
+Pour synchroniser le transfert du protocole entre le serveur et le client, nous avons essayé plusieurs méthodes
 
 
 \clearpage
@@ -511,6 +511,25 @@ Néanmoins, si on veut allumer deux LEDs dont le pin\_row n'est pas la même, il
 		\end{minipage}%
 	}%
 \end{figure}
+
+\section{Conclusion}
+Ce projet nous a permis de découvrir le domaine du microcontroleur qui était obscur pour nous.Nous avons appris les caractéristiques et l'architecture du microcontroleur et exploré les aspects de développement en fonction des restrictions du microcontroleur.
+
+Nous avons aussi appliqué ce que nous avons appris lors du master 1 en cours de "Développment d'un langage de programmation",et en "Analyse des programmes et sémantique".
+
+Nous avons réalisé les fonctions de base du simulateur.L'interaction entre le client et le serveur du simulateur est stable, et il peut simuler l'effet du fichier Ocaml compilé par OmicroB exécuté sur Micro:bit.
+
+Malheureusement,comme nous l'avons exprimé précédement, nous n'avons pas le temps d'enrichir les fonctions du simulateur et de le tester sur des microcontroleurs Arduino. Bien que nous ayons passé beaucoup de temps à essayer différentes méthodes pour implémenter le simulateur, nous pensons que ces tentatives ne sont pas uniquement pour ce projet. Il a également accumulé de l'expérience sur notre future de programmation.
+
+\section{Références}
+[1]Matt Oppenheim,"Measuring the BBC micro:bit LED current draw",2019,[Online].\\
+Available:https://www.seismicmatt.com/2019/03/06/measuring-the-bbc-microbit-led-current-draw/\\
+
+[2]Micro:bit,"Micro Bit Light Sensor",[Online].\\
+Available:https://lancaster-university.github.io/microbit-docs/extras/light-sensing/\\
+
+[3][4]Steven Varoumas, Benoît Vaugon, Emmanuel Chailloux."A Generic Virtual Machine Approach for Programming Microcontrollers: the OMicroB Project",Toulouse, France.[Online].\\
+Available:https://hal.sorbonne-universite.fr/hal-01705825/document\\
 
 
 
